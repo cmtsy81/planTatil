@@ -1,5 +1,6 @@
 (function () {
   const STORAGE_ROUTE_KEY = "plantatil.routes.v1";
+  const STORAGE_META_KEY = "plantatil.tripMeta.v1";
   const STORAGE_DONE_KEY = "plantatil.completedStops.v1";
   const STORAGE_TRIED_KEY = "plantatil.triedFood.v1";
 
@@ -7,6 +8,7 @@
     cityId: "rome",
     dayId: "day-1",
     role: "participant",
+    cities: loadCities(),
     routes: loadRoutes(),
     completedStops: loadJson(STORAGE_DONE_KEY, {}),
     triedFood: loadJson(STORAGE_TRIED_KEY, {}),
@@ -23,6 +25,7 @@
     routeContext: document.querySelector("#routeContext"),
     routeList: document.querySelector("#routeList"),
     emptyState: document.querySelector("#emptyState"),
+    addDayButton: document.querySelector("#addDayButton"),
     addStopButton: document.querySelector("#addStopButton"),
     rolePanel: document.querySelector("#rolePanel"),
     stopCount: document.querySelector("#stopCount"),
@@ -76,8 +79,10 @@
         return;
       }
       localStorage.removeItem(STORAGE_ROUTE_KEY);
+      localStorage.removeItem(STORAGE_META_KEY);
       localStorage.removeItem(STORAGE_DONE_KEY);
       localStorage.removeItem(STORAGE_TRIED_KEY);
+      state.cities = structuredClone(DEMO_TRIP_DATA.cities);
       state.routes = structuredClone(DEMO_TRIP_DATA.routes);
       state.completedStops = {};
       state.triedFood = {};
@@ -87,6 +92,7 @@
       render();
     });
 
+    els.addDayButton.addEventListener("click", addDay);
     els.addStopButton.addEventListener("click", () => openStopDialog());
     els.stopForm.addEventListener("submit", saveStopFromForm);
     els.foodForm.addEventListener("submit", saveFoodFromForm);
@@ -137,12 +143,13 @@
     els.dayWindow.textContent = stops.length ? `${stops[0].time}-${stops[stops.length - 1].time}` : "-";
     els.emptyState.hidden = stops.length > 0;
     els.routeList.innerHTML = stops.map((stop) => renderStop(stop, nextStop)).join("");
+    els.addDayButton.classList.toggle("hidden", state.role !== "admin");
     els.addStopButton.classList.toggle("hidden", state.role !== "admin");
     renderRolePanel();
   }
 
   function renderCityOptions() {
-    els.citySelect.innerHTML = DEMO_TRIP_DATA.cities
+    els.citySelect.innerHTML = state.cities
       .map((city) => `<option value="${city.id}">${city.name}</option>`)
       .join("");
     els.citySelect.value = state.cityId;
@@ -382,6 +389,7 @@
   function exportDataJs() {
     const exportedData = {
       ...DEMO_TRIP_DATA,
+      cities: state.cities,
       routes: state.routes
     };
     const content = `const DEMO_TRIP_DATA = ${JSON.stringify(exportedData, null, 2)};\n`;
@@ -477,7 +485,7 @@
   }
 
   function getSelectedCity() {
-    return DEMO_TRIP_DATA.cities.find((city) => city.id === state.cityId);
+    return state.cities.find((city) => city.id === state.cityId);
   }
 
   function getRouteKey() {
@@ -531,6 +539,14 @@
     return demo;
   }
 
+  function loadCities() {
+    const saved = localStorage.getItem(STORAGE_META_KEY);
+    if (saved) return JSON.parse(saved);
+    const demo = structuredClone(DEMO_TRIP_DATA.cities);
+    localStorage.setItem(STORAGE_META_KEY, JSON.stringify(demo));
+    return demo;
+  }
+
   function loadJson(key, fallback) {
     const saved = localStorage.getItem(key);
     return saved ? JSON.parse(saved) : fallback;
@@ -538,6 +554,33 @@
 
   function saveRoutes() {
     saveJson(STORAGE_ROUTE_KEY, state.routes);
+  }
+
+  function saveCities() {
+    saveJson(STORAGE_META_KEY, state.cities);
+  }
+
+  function addDay() {
+    const city = getSelectedCity();
+    if (!city) return;
+
+    const input = prompt("Yeni gün adı ne olsun?", `Gün ${city.days.length + 1}`);
+    const label = input?.trim();
+    if (!label) return;
+
+    const nextIndex = city.days.reduce((max, day) => {
+      const match = /^day-(\d+)$/.exec(day.id);
+      return match ? Math.max(max, Number(match[1])) : max;
+    }, 0) + 1;
+    const dayId = `day-${nextIndex}`;
+
+    city.days.push({ id: dayId, label });
+    state.dayId = dayId;
+    state.routes[getRouteKey()] = state.routes[getRouteKey()] || [];
+    saveCities();
+    saveRoutes();
+    renderDayOptions();
+    render();
   }
 
   function saveJson(key, value) {
