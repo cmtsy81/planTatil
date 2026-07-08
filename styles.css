@@ -393,7 +393,15 @@ textarea {
 }
 
 .detail-actions {
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.micro-button {
+  font-size: 0.72rem;
+  min-height: 34px;
+  padding: 6px 10px;
 }
 
 .primary-button {
@@ -457,6 +465,10 @@ textarea {
   width: min(94vw, 720px);
 }
 
+.dialog--compact {
+  max-width: 460px;
+}
+
 .dialog::backdrop {
   background: rgba(20, 24, 17, 0.55);
 }
@@ -473,6 +485,10 @@ textarea {
   display: grid;
   gap: 12px;
   margin: 16px 0;
+}
+
+.form-grid--compact {
+  grid-template-columns: 1fr;
 }
 
 .hidden {

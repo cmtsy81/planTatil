@@ -96,9 +96,14 @@
           <button class="icon-button" id="closeStopDialog" type="button" aria-label="Kapat">x</button>
         </div>
         <input type="hidden" id="stopId">
+        <input type="hidden" id="stopSourceRouteKey">
         <div class="form-grid">
           <label>Saat <input id="stopTime" type="time" required></label>
           <label>Başlık <input id="stopTitle" type="text" required></label>
+          <label>
+            Gun Degistir / Baska Gune Tasi
+            <select id="stopDayId"></select>
+          </label>
           <label>
             Tur
             <select id="stopType">
@@ -168,6 +173,22 @@
         <menu class="dialog__actions">
           <button class="ghost-button" id="cancelFoodDialog" type="button">Vazgeç</button>
           <button class="primary-button" id="saveFoodButton" value="default" type="submit">Öneri Ekle</button>
+        </menu>
+      </form>
+    </dialog>
+
+    <dialog class="dialog dialog--compact" id="dayDialog">
+      <form method="dialog" id="dayForm">
+        <div class="dialog__header">
+          <h2 id="dayDialogTitle">Yeni gün ekle</h2>
+          <button class="icon-button" id="closeDayDialog" type="button" aria-label="Kapat">x</button>
+        </div>
+        <div class="form-grid form-grid--compact">
+          <label>Gün adı <input id="dayLabel" type="text" placeholder="Gün 2" required></label>
+        </div>
+        <menu class="dialog__actions">
+          <button class="ghost-button" id="cancelDayDialog" type="button">Vazgeç</button>
+          <button class="primary-button" id="saveDayButton" value="default" type="submit">Günü Ekle</button>
         </menu>
       </form>
     </dialog>

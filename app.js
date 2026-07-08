@@ -34,10 +34,14 @@
     stopDialog: document.querySelector("#stopDialog"),
     stopForm: document.querySelector("#stopForm"),
     stopDialogTitle: document.querySelector("#stopDialogTitle"),
+    dayDialog: document.querySelector("#dayDialog"),
+    dayForm: document.querySelector("#dayForm"),
     foodDialog: document.querySelector("#foodDialog"),
     foodForm: document.querySelector("#foodForm"),
     foodDialogTitle: document.querySelector("#foodDialogTitle"),
     saveFoodButton: document.querySelector("#saveFoodButton"),
+    closeDayDialog: document.querySelector("#closeDayDialog"),
+    cancelDayDialog: document.querySelector("#cancelDayDialog"),
     closeStopDialog: document.querySelector("#closeStopDialog"),
     cancelStopDialog: document.querySelector("#cancelStopDialog"),
     closeFoodDialog: document.querySelector("#closeFoodDialog"),
@@ -92,10 +96,13 @@
       render();
     });
 
-    els.addDayButton.addEventListener("click", addDay);
+    els.addDayButton.addEventListener("click", openDayDialog);
     els.addStopButton.addEventListener("click", () => openStopDialog());
+    els.dayForm.addEventListener("submit", saveDayFromForm);
     els.stopForm.addEventListener("submit", saveStopFromForm);
     els.foodForm.addEventListener("submit", saveFoodFromForm);
+    els.closeDayDialog.addEventListener("click", () => els.dayDialog.close());
+    els.cancelDayDialog.addEventListener("click", () => els.dayDialog.close());
     els.closeStopDialog.addEventListener("click", () => els.stopDialog.close());
     els.cancelStopDialog.addEventListener("click", () => els.stopDialog.close());
     els.closeFoodDialog.addEventListener("click", () => els.foodDialog.close());
@@ -158,7 +165,7 @@
   function renderDayOptions() {
     const city = getSelectedCity();
     els.daySelect.innerHTML = city.days
-      .map((day) => `<option value="${day.id}">${day.label}</option>`)
+      .map((day, index) => `<option value="${day.id}">Gun ${index + 1} - ${day.label}</option>`)
       .join("");
     els.daySelect.value = state.dayId;
   }
@@ -224,13 +231,14 @@
             <div class="fact"><strong>Adres:</strong> ${escapeHtml(stop.address || "-")}</div>
             <div class="fact"><strong>Bilet:</strong> ${stop.ticketRequired ? "Gerekli" : "Gerekli değil"}</div>
             <div class="fact"><strong>Rezervasyon:</strong> ${stop.reservationRequired ? "Gerekli" : "Gerekli değil"}</div>
+            ${stop.ticketNote ? `<div class="fact"><strong>Bilet notu:</strong> ${escapeHtml(stop.ticketNote)}</div>` : ""}
+            ${stop.transportNote ? `<div class="fact"><strong>Ulasim notu:</strong> ${escapeHtml(stop.transportNote)}</div>` : ""}
           </div>
           ${renderFoodSuggestions(stop.foodSuggestions || [], stop.id)}
           ${foodEditorAction ? `<div class="food-actions">${foodEditorAction}</div>` : ""}
           ${adminActions}
-          <div class="actions detail-actions">
-          <button class="secondary-button" data-action="next" data-stop-id="${stop.id}" type="button">Sonraki Durağa Geç</button>
-          <button class="secondary-button" data-action="toggle-details" data-stop-id="${stop.id}" type="button">Detayı Kapat</button>
+          <div class="detail-actions">
+            <button class="ghost-button micro-button" data-action="next" data-stop-id="${stop.id}" type="button">Sonraki durağa geç</button>
           </div>
         </div>
       </article>
@@ -275,10 +283,17 @@
 
   function openStopDialog(stop) {
     const isEdit = Boolean(stop);
+    const sourceRouteKey = isEdit ? findRouteKeyByStopId(stop.id) : getRouteKey();
+    const city = getSelectedCity();
     els.stopDialogTitle.textContent = isEdit ? "Durağı düzenle" : "Yeni durak ekle";
     document.querySelector("#stopId").value = stop?.id || "";
+    document.querySelector("#stopSourceRouteKey").value = sourceRouteKey || getRouteKey();
     document.querySelector("#stopTime").value = stop?.time || "09:00";
     document.querySelector("#stopTitle").value = stop?.title || "";
+    document.querySelector("#stopDayId").innerHTML = city.days
+      .map((day, index) => `<option value="${day.id}">Gun ${index + 1} - ${day.label}</option>`)
+      .join("");
+    document.querySelector("#stopDayId").value = sourceRouteKey ? sourceRouteKey.split(":")[1] : state.dayId;
     document.querySelector("#stopType").value = stop?.type || "gezi";
     document.querySelector("#stopDuration").value = stop?.duration || "";
     document.querySelector("#stopAddress").value = stop?.address || "";
@@ -293,6 +308,10 @@
   function saveStopFromForm(event) {
     event.preventDefault();
     const existingId = document.querySelector("#stopId").value;
+    const sourceRouteKey = document.querySelector("#stopSourceRouteKey").value || getRouteKey();
+    const targetDayId = document.querySelector("#stopDayId").value || state.dayId;
+    const targetRouteKey = `${state.cityId}:${targetDayId}`;
+    const existingStop = existingId ? findStopById(existingId) : null;
     const stop = {
       id: existingId || `stop-${Date.now()}`,
       time: document.querySelector("#stopTime").value,
@@ -305,11 +324,17 @@
       ticketRequired: document.querySelector("#stopTicketRequired").value === "true",
       reservationRequired: document.querySelector("#stopReservationRequired").value === "true",
       priority: document.querySelector("#stopPriority").value,
-      foodSuggestions: existingId ? getStop(existingId).foodSuggestions || [] : []
+      foodSuggestions: existingStop?.foodSuggestions || [],
+      ticketNote: existingStop?.ticketNote,
+      transportNote: existingStop?.transportNote
     };
 
-    const stops = getCurrentStops();
-    const index = stops.findIndex((item) => item.id === existingId);
+    if (existingId) {
+      removeStopFromAllRoutes(existingId);
+    }
+
+    const stops = getStopsByRouteKey(targetRouteKey);
+    const index = stops.findIndex((item) => item.id === stop.id);
     if (index >= 0) {
       stops[index] = stop;
     } else {
@@ -318,6 +343,8 @@
     sortStops(stops);
     saveRoutes();
     els.stopDialog.close();
+    state.dayId = targetDayId;
+    renderDayOptions();
     render();
   }
 
@@ -498,8 +525,42 @@
     return state.routes[key];
   }
 
+  function getStopsByRouteKey(routeKey) {
+    if (!state.routes[routeKey]) state.routes[routeKey] = [];
+    return state.routes[routeKey];
+  }
+
   function getStop(stopId) {
     return getCurrentStops().find((stop) => stop.id === stopId);
+  }
+
+  function findStopById(stopId) {
+    for (const stops of Object.values(state.routes)) {
+      const found = stops.find((stop) => stop.id === stopId);
+      if (found) return found;
+    }
+    return null;
+  }
+
+  function findRouteKeyByStopId(stopId) {
+    for (const [routeKey, stops] of Object.entries(state.routes)) {
+      if (stops.some((stop) => stop.id === stopId)) return routeKey;
+    }
+    return null;
+  }
+
+  function removeStopFromRoute(routeKey, stopId) {
+    const stops = getStopsByRouteKey(routeKey);
+    const index = stops.findIndex((stop) => stop.id === stopId);
+    if (index >= 0) {
+      stops.splice(index, 1);
+    }
+  }
+
+  function removeStopFromAllRoutes(stopId) {
+    Object.keys(state.routes).forEach((routeKey) => {
+      removeStopFromRoute(routeKey, stopId);
+    });
   }
 
   function findFood(foodId) {
@@ -533,18 +594,51 @@
 
   function loadRoutes() {
     const saved = localStorage.getItem(STORAGE_ROUTE_KEY);
-    if (saved) return JSON.parse(saved);
+    if (saved) {
+      const localRoutes = JSON.parse(saved);
+      normalizeRoutes(localRoutes);
+      localStorage.setItem(STORAGE_ROUTE_KEY, JSON.stringify(localRoutes));
+      return localRoutes;
+    }
     const demo = structuredClone(DEMO_TRIP_DATA.routes);
+    normalizeRoutes(demo);
     localStorage.setItem(STORAGE_ROUTE_KEY, JSON.stringify(demo));
     return demo;
   }
 
   function loadCities() {
     const saved = localStorage.getItem(STORAGE_META_KEY);
-    if (saved) return JSON.parse(saved);
+    if (saved) {
+      return JSON.parse(saved);
+    }
     const demo = structuredClone(DEMO_TRIP_DATA.cities);
     localStorage.setItem(STORAGE_META_KEY, JSON.stringify(demo));
     return demo;
+  }
+
+  function normalizeRoutes(routes) {
+    const lastSeenRouteKeyByStopId = {};
+
+    Object.entries(routes).forEach(([routeKey, stops]) => {
+      stops.forEach((stop) => {
+        lastSeenRouteKeyByStopId[stop.id] = routeKey;
+      });
+    });
+
+    Object.entries(routes).forEach(([routeKey, stops]) => {
+      const uniqueStops = [];
+      const seenInRoute = new Set();
+
+      stops.forEach((stop) => {
+        if (lastSeenRouteKeyByStopId[stop.id] !== routeKey) return;
+        if (seenInRoute.has(stop.id)) return;
+        seenInRoute.add(stop.id);
+        uniqueStops.push(stop);
+      });
+
+      routes[routeKey] = uniqueStops;
+      sortStops(routes[routeKey]);
+    });
   }
 
   function loadJson(key, fallback) {
@@ -558,6 +652,37 @@
 
   function saveCities() {
     saveJson(STORAGE_META_KEY, state.cities);
+  }
+
+  function openDayDialog() {
+    const city = getSelectedCity();
+    if (!city) return;
+    document.querySelector("#dayLabel").value = `Gün ${city.days.length + 1}`;
+    els.dayDialog.showModal();
+  }
+
+  function saveDayFromForm(event) {
+    event.preventDefault();
+    const city = getSelectedCity();
+    if (!city) return;
+
+    const label = document.querySelector("#dayLabel").value.trim();
+    if (!label) return;
+
+    const nextIndex = city.days.reduce((max, day) => {
+      const match = /^day-(\d+)$/.exec(day.id);
+      return match ? Math.max(max, Number(match[1])) : max;
+    }, 0) + 1;
+    const dayId = `day-${nextIndex}`;
+
+    city.days.push({ id: dayId, label });
+    state.dayId = dayId;
+    state.routes[getRouteKey()] = state.routes[getRouteKey()] || [];
+    saveCities();
+    saveRoutes();
+    els.dayDialog.close();
+    renderDayOptions();
+    render();
   }
 
   function addDay() {
@@ -596,3 +721,4 @@
       .replaceAll("'", "&#039;");
   }
 })();
+
