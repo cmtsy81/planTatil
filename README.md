@@ -41,6 +41,17 @@ Bu proje backend, framework, npm veya build sistemi kullanmaz.
 - `plantatil.triedFood.v1`: Katilimci lezzet onerisi denedim isaretleri.
 - `Verileri Sifirla` butonu bu kayitlari temizler ve demo veriye doner.
 
+## Yerel Duzenlemeleri data.js'e Aktarma
+
+Admin kartlari veya Lezzet Editoru onerileri tarayicida localStorage'a kaydedilir. Bu degisiklikleri herkesin gorecegi kalici plana almak icin `data.js Ciktisi Indir` butonunu kullan:
+
+1. Plani tarayicida duzenle.
+2. `data.js Ciktisi Indir` butonuna bas.
+3. Inen `data.js` dosyasini repodaki `data.js` ile degistir.
+4. Git commit/push yap. GitHub Pages yayini guncellendiginde herkes yeni plani gorur.
+
+Katilimci `Geldim/Gordum` ve `Denedim` isaretleri kisiye ozel oldugu icin bu ciktiya eklenmez.
+
 ## Sonraki Gelistirme Onerileri
 
 - Roma icin 4.5 gunluk ayrintili plan.

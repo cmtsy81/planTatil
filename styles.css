@@ -58,6 +58,13 @@ button {
   gap: 14px;
 }
 
+.hero__actions {
+  display: grid;
+  flex: 0 0 auto;
+  gap: 8px;
+  max-width: 180px;
+}
+
 .eyebrow {
   color: var(--terra);
   font-size: 0.76rem;

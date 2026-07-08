@@ -23,3 +23,7 @@ Ilk hedef Roma / Gun 1 demosudur. Diger sehir ve gunler bos durum ekraniyla hazi
 ## Lezzet Onerisi Duzenleme Karari
 
 Lezzet Editoru rolune mevcut onerileri duzenleme ve silme yetkisi eklendi. Ayni dialog hem yeni oneri ekleme hem de var olan oneriyi guncelleme icin kullanilir. Silme islemi sadece ilgili lezzet onerisi listesini etkiler; ana rota karti korunur.
+
+## data.js Aktarma Karari
+
+GitHub Pages statik calistigi icin tarayici dogrudan repodaki `data.js` dosyasina yazamaz. Bu nedenle uygulamaya localStorage'daki guncel rota ve lezzet onerilerini `data.js` formatinda indiren bir cikti butonu eklendi. Katilimci tamamlandi/denedim isaretleri kisisel veri olarak disarida tutulur.

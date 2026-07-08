@@ -16,6 +16,7 @@
     citySelect: document.querySelector("#citySelect"),
     daySelect: document.querySelector("#daySelect"),
     roleSelect: document.querySelector("#roleSelect"),
+    exportDataButton: document.querySelector("#exportDataButton"),
     resetDataButton: document.querySelector("#resetDataButton"),
     nextStopBanner: document.querySelector("#nextStopBanner"),
     routeContext: document.querySelector("#routeContext"),
@@ -66,6 +67,8 @@
       state.role = els.roleSelect.value;
       render();
     });
+
+    els.exportDataButton.addEventListener("click", exportDataJs);
 
     els.resetDataButton.addEventListener("click", () => {
       if (!confirm("Demo veriye dönülsün mü? Tüm yerel değişiklikler silinir.")) {
@@ -368,6 +371,23 @@
     saveRoutes();
     saveJson(STORAGE_DONE_KEY, state.completedStops);
     render();
+  }
+
+  function exportDataJs() {
+    const exportedData = {
+      ...DEMO_TRIP_DATA,
+      routes: state.routes
+    };
+    const content = `const DEMO_TRIP_DATA = ${JSON.stringify(exportedData, null, 2)};\n`;
+    const blob = new Blob([content], { type: "text/javascript;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "data.js";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
   }
 
   function openNavigation(stopId) {
