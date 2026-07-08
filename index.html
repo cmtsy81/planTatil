@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PlanTatil - İtalya Gezi Panosu</title>
+    <meta
+      name="description"
+      content="PlanTatil mobil öncelikli gezi rota panosu prototipi."
+    >
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="hero">
+        <div class="hero__top">
+          <div>
+            <p class="eyebrow">Mobil gezi rota panosu</p>
+            <h1>PlanTatil</h1>
+            <p class="subtitle">İtalya Gezi Panosu</p>
+          </div>
+          <button class="ghost-button" id="resetDataButton" type="button">
+            Verileri Sıfırla
+          </button>
+        </div>
+
+        <section class="next-stop" id="nextStopBanner" aria-live="polite">
+          Siradaki durak hesaplanıyor...
+        </section>
+      </header>
+
+      <main>
+        <section class="controls" aria-label="Pano secimleri">
+          <label>
+            Sehir
+            <select id="citySelect"></select>
+          </label>
+          <label>
+            Gun
+            <select id="daySelect"></select>
+          </label>
+          <label>
+            Rol
+            <select id="roleSelect">
+              <option value="admin">Admin</option>
+              <option value="foodEditor">Lezzet Editörü</option>
+              <option value="participant">Katılımcı</option>
+            </select>
+          </label>
+        </section>
+
+        <section class="summary-grid" aria-label="Gun ozeti">
+          <article>
+            <span id="stopCount">0</span>
+            <p>Durak</p>
+          </article>
+          <article>
+            <span id="completedCount">0</span>
+            <p>Tamamlandı</p>
+          </article>
+          <article>
+            <span id="dayWindow">-</span>
+            <p>Zaman aralığı</p>
+          </article>
+        </section>
+
+        <section class="role-panel" id="rolePanel"></section>
+
+        <section class="route-heading">
+          <div>
+            <p class="eyebrow" id="routeContext">Roma / Gün 1</p>
+            <h2>Bugunun rota kartlari</h2>
+          </div>
+          <button class="primary-button admin-only" id="addStopButton" type="button">
+            + Yeni Durak
+          </button>
+        </section>
+
+        <section class="empty-state" id="emptyState" hidden>
+          <h2>Bu seçim için rota henüz hazır değil.</h2>
+          <p>İlk prototipte yalnızca Roma / Gün 1 dolu. Diğer şehir ve günler sonraki fazlarda eklenecek.</p>
+        </section>
+
+        <section class="timeline" id="routeList" aria-label="Rota kartlari"></section>
+      </main>
+    </div>
+
+    <dialog class="dialog" id="stopDialog">
+      <form method="dialog" id="stopForm">
+        <div class="dialog__header">
+          <h2 id="stopDialogTitle">Durak</h2>
+          <button class="icon-button" id="closeStopDialog" type="button" aria-label="Kapat">x</button>
+        </div>
+        <input type="hidden" id="stopId">
+        <div class="form-grid">
+          <label>Saat <input id="stopTime" type="time" required></label>
+          <label>Başlık <input id="stopTitle" type="text" required></label>
+          <label>
+            Tur
+            <select id="stopType">
+              <option value="gezi">Gezi</option>
+              <option value="müze">Müze</option>
+              <option value="yemek molası">Yemek molası</option>
+              <option value="serbest zaman">Serbest zaman</option>
+            </select>
+          </label>
+          <label>Tahmini süre <input id="stopDuration" type="text" placeholder="90 dk"></label>
+          <label class="span-2">Adres <input id="stopAddress" type="text"></label>
+          <label class="span-2">Google Maps linki <input id="stopMapLink" type="url"></label>
+          <label class="span-2">Kısa açıklama <textarea id="stopDescription" rows="3"></textarea></label>
+          <label>
+            Bilet gerekli mi?
+            <select id="stopTicketRequired">
+              <option value="false">Hayır</option>
+              <option value="true">Evet</option>
+            </select>
+          </label>
+          <label>
+            Rezervasyon gerekli mi?
+            <select id="stopReservationRequired">
+              <option value="false">Hayır</option>
+              <option value="true">Evet</option>
+            </select>
+          </label>
+          <label>
+            Öncelik
+            <select id="stopPriority">
+              <option value="mutlaka">Mutlaka</option>
+              <option value="opsiyonel">Opsiyonel</option>
+            </select>
+          </label>
+        </div>
+        <menu class="dialog__actions">
+          <button class="ghost-button" id="cancelStopDialog" type="button">Vazgeç</button>
+          <button class="primary-button" id="saveStopButton" value="default" type="submit">Kaydet</button>
+        </menu>
+      </form>
+    </dialog>
+
+    <dialog class="dialog" id="foodDialog">
+      <form method="dialog" id="foodForm">
+        <div class="dialog__header">
+          <h2>Lezzet önerisi ekle</h2>
+          <button class="icon-button" id="closeFoodDialog" type="button" aria-label="Kapat">x</button>
+        </div>
+        <input type="hidden" id="foodStopId">
+        <div class="form-grid">
+          <label>
+            Tur
+            <select id="foodType">
+              <option value="yemek">Yemek</option>
+              <option value="kahve">Kahve</option>
+              <option value="dondurma">Dondurma</option>
+              <option value="tatlı">Tatlı</option>
+              <option value="alışveriş">Alışveriş</option>
+            </select>
+          </label>
+          <label>Fiyat etiketi <input id="foodPrice" type="text" placeholder="€€"></label>
+          <label class="span-2">Başlık <input id="foodTitle" type="text" required></label>
+          <label class="span-2">Harita linki <input id="foodMapLink" type="url"></label>
+          <label class="span-2">Kısa not <textarea id="foodNote" rows="3"></textarea></label>
+        </div>
+        <menu class="dialog__actions">
+          <button class="ghost-button" id="cancelFoodDialog" type="button">Vazgeç</button>
+          <button class="primary-button" id="saveFoodButton" value="default" type="submit">Öneri Ekle</button>
+        </menu>
+      </form>
+    </dialog>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
