@@ -19,22 +19,23 @@
             <h1>PlanTatil</h1>
             <p class="subtitle">İtalya Gezi Panosu</p>
           </div>
-          <div class="hero__actions">
-            <button class="ghost-button" id="exportDataButton" type="button">
-              data.js Çıktısı İndir
-            </button>
-            <button class="ghost-button" id="resetDataButton" type="button">
-              Verileri Sıfırla
-            </button>
-          </div>
         </div>
-
-        <section class="next-stop" id="nextStopBanner" aria-live="polite">
-          Siradaki durak hesaplanıyor...
-        </section>
       </header>
 
       <main>
+        <section class="route-heading">
+          <div>
+            <p class="eyebrow" id="routeContext">Roma / Gün 1</p>
+            <h2>Bugunun rota kartlari</h2>
+          </div>
+        </section>
+
+        <section class="empty-state" id="emptyState" hidden>
+          <h2>Bu seçim için rota henüz hazır değil.</h2>
+          <p>İlk prototipte yalnızca Roma / Gün 1 dolu. Diğer şehir ve günler sonraki fazlarda eklenecek.</p>
+        </section>
+
+        <section class="timeline" id="routeList" aria-label="Rota kartlari"></section>
         <section class="controls" aria-label="Pano secimleri">
           <label>
             Sehir
@@ -53,7 +54,6 @@
             </select>
           </label>
         </section>
-
         <section class="summary-grid" aria-label="Gun ozeti">
           <article>
             <span id="stopCount">0</span>
@@ -68,25 +68,21 @@
             <p>Zaman aralığı</p>
           </article>
         </section>
-
         <section class="role-panel" id="rolePanel"></section>
-
-        <section class="route-heading">
-          <div>
-            <p class="eyebrow" id="routeContext">Roma / Gün 1</p>
-            <h2>Bugunun rota kartlari</h2>
-          </div>
-          <button class="primary-button admin-only" id="addStopButton" type="button">
+        <section class="panel-actions" aria-label="Plan islemleri">
+          <button class="ghost-button" id="exportDataButton" type="button">
+            data.js Çıktısı İndir
+          </button>
+          <button class="ghost-button" id="resetDataButton" type="button">
+            Verileri Sıfırla
+          </button>
+        </section>
+        <section class="panel-actions panel-actions--admin admin-only">
+          <button class="primary-button" id="addStopButton" type="button">
             + Yeni Durak
           </button>
         </section>
-
-        <section class="empty-state" id="emptyState" hidden>
-          <h2>Bu seçim için rota henüz hazır değil.</h2>
-          <p>İlk prototipte yalnızca Roma / Gün 1 dolu. Diğer şehir ve günler sonraki fazlarda eklenecek.</p>
-        </section>
-
-        <section class="timeline" id="routeList" aria-label="Rota kartlari"></section>
+        <footer class="site-credit">created by cmtsy</footer>
       </main>
     </div>
 

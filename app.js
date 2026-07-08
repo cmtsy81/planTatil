@@ -6,7 +6,7 @@
   const state = {
     cityId: "rome",
     dayId: "day-1",
-    role: "admin",
+    role: "participant",
     routes: loadRoutes(),
     completedStops: loadJson(STORAGE_DONE_KEY, {}),
     triedFood: loadJson(STORAGE_TRIED_KEY, {}),
@@ -20,7 +20,6 @@
     roleSelect: document.querySelector("#roleSelect"),
     exportDataButton: document.querySelector("#exportDataButton"),
     resetDataButton: document.querySelector("#resetDataButton"),
-    nextStopBanner: document.querySelector("#nextStopBanner"),
     routeContext: document.querySelector("#routeContext"),
     routeList: document.querySelector("#routeList"),
     emptyState: document.querySelector("#emptyState"),
@@ -132,6 +131,7 @@
     initializeExpandedStops(routeKey, nextStop);
 
     els.routeContext.textContent = `${city.name} / ${day.label}`;
+    els.roleSelect.value = state.role;
     els.stopCount.textContent = stops.length;
     els.completedCount.textContent = stops.filter((stop) => state.completedStops[stop.id]).length;
     els.dayWindow.textContent = stops.length ? `${stops[0].time}-${stops[stops.length - 1].time}` : "-";
@@ -139,7 +139,6 @@
     els.routeList.innerHTML = stops.map((stop) => renderStop(stop, nextStop)).join("");
     els.addStopButton.classList.toggle("hidden", state.role !== "admin");
     renderRolePanel();
-    renderNextStopBanner(stops, nextStop, routeKey);
   }
 
   function renderCityOptions() {
@@ -169,29 +168,11 @@
       },
       participant: {
         title: "Katılımcı modu",
-        text: "Rotayı takip edebilir, navigasyonu açabilir ve kendi tamamlandı/denedim işaretlerini tutabilirsin."
+        text: "Rotayı takip edebilir, konumu açabilir ve kendi tamamlandı işaretlerini tutabilirsin."
       }
     };
     const panel = panels[state.role];
     els.rolePanel.innerHTML = `<h2>${panel.title}</h2><p>${panel.text}</p>`;
-  }
-
-  function renderNextStopBanner(stops, nextStop) {
-    if (!stops.length) {
-      els.nextStopBanner.textContent = "Bu seçim için rota henüz hazır değil.";
-      return;
-    }
-    if (!nextStop) {
-      els.nextStopBanner.textContent = "Bugünün tüm durakları tamamlanmış veya saat olarak geride kalmış görünüyor.";
-      return;
-    }
-
-    const minutes = minutesUntil(nextStop.time);
-    if (minutes >= 0 && minutes <= 30) {
-      els.nextStopBanner.textContent = `Sıradaki durak yaklaştı: ${nextStop.time} ${nextStop.title}.`;
-    } else {
-      els.nextStopBanner.textContent = `Sıradaki durak: ${nextStop.time} ${nextStop.title}.`;
-    }
   }
 
   function renderStop(stop, nextStop) {
@@ -224,12 +205,9 @@
             </div>
           </div>
           <div class="compact-actions">
-            <button class="primary-button compact-button" data-action="navigate" data-stop-id="${stop.id}" type="button">Navigasyonu Aç</button>
+            <button class="primary-button compact-button" data-action="navigate" data-stop-id="${stop.id}" type="button">Konumu Aç</button>
             <button class="secondary-button compact-button" data-action="toggle-complete" data-stop-id="${stop.id}" type="button">
-              ${isCompleted ? "İşareti Kaldır" : "Geldim / Gördüm"}
-            </button>
-            <button class="ghost-button compact-button detail-toggle" data-action="toggle-details" data-stop-id="${stop.id}" type="button" aria-expanded="${isExpanded}">
-              ${isExpanded ? "Kapat ↑" : "Detay ↓"}
+              ${isCompleted ? "Tamamlandı Kaldır" : "Tamamladım"}
             </button>
           </div>
         </div>
@@ -244,7 +222,8 @@
           ${foodEditorAction ? `<div class="food-actions">${foodEditorAction}</div>` : ""}
           ${adminActions}
           <div class="actions detail-actions">
-          <button class="ghost-button" data-action="next" data-stop-id="${stop.id}" type="button">Sonraki Durağa Geç</button>
+          <button class="secondary-button" data-action="next" data-stop-id="${stop.id}" type="button">Sonraki Durağa Geç</button>
+          <button class="secondary-button" data-action="toggle-details" data-stop-id="${stop.id}" type="button">Detayı Kapat</button>
           </div>
         </div>
       </article>
@@ -262,7 +241,7 @@
           const tried = Boolean(state.triedFood[item.id]);
           const tryButton = state.role === "participant"
             ? `<button class="secondary-button" data-action="toggle-food" data-food-id="${item.id}" type="button">
-                ${tried ? "Denedim İşaretini Kaldır" : "Denedim"}
+                ${tried ? "Tamamlandı Kaldır" : "Tamamladım"}
               </button>`
             : "";
           const editorActions = state.role === "foodEditor"
