@@ -195,7 +195,7 @@ textarea {
 
 .timeline {
   display: grid;
-  gap: 16px;
+  gap: 10px;
   position: relative;
 }
 
@@ -212,105 +212,160 @@ textarea {
 .stop-card {
   background: var(--card);
   border: 1px solid var(--line);
-  border-radius: 20px;
+  border-radius: 16px;
   box-shadow: var(--shadow);
-  margin-left: 40px;
-  padding: 15px;
+  margin-left: 32px;
+  padding: 10px;
   position: relative;
+  transition: border-color 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
 }
 
 .stop-card::before {
   background: var(--cream);
-  border: 4px solid var(--terra);
+  border: 3px solid var(--terra);
   border-radius: 50%;
   content: "";
-  height: 18px;
-  left: -31px;
+  height: 15px;
+  left: -25px;
   position: absolute;
-  top: 19px;
-  width: 18px;
+  top: 17px;
+  width: 15px;
 }
 
 .stop-card.is-next {
   border-color: rgba(200, 107, 63, 0.65);
+  box-shadow: 0 10px 28px rgba(200, 107, 63, 0.18);
 }
 
 .stop-card.is-completed {
-  opacity: 0.74;
+  opacity: 0.68;
 }
 
 .stop-card.is-completed::after {
-  background: rgba(38, 61, 43, 0.88);
-  border-radius: 999px;
-  color: #fff;
-  content: "Tamamlandi";
-  font-size: 0.74rem;
-  font-weight: 800;
-  padding: 5px 9px;
-  position: absolute;
-  right: 12px;
-  top: 12px;
+  display: none;
+}
+
+.stop-card.is-expanded {
+  border-color: rgba(38, 61, 43, 0.22);
+}
+
+.stop-summary {
+  cursor: pointer;
+  display: grid;
+  gap: 9px;
+}
+
+.stop-summary:focus-visible {
+  outline: 3px solid rgba(200, 107, 63, 0.4);
+  outline-offset: 4px;
+}
+
+.stop-main {
+  align-items: flex-start;
+  display: grid;
+  gap: 9px;
+  grid-template-columns: auto 1fr;
+}
+
+.stop-title-block {
+  min-width: 0;
 }
 
 .stop-meta {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 10px;
+  gap: 5px;
+  margin: 0;
 }
 
 .time {
   background: var(--olive);
   border-radius: 999px;
   color: #fff;
+  display: inline-flex;
   font-weight: 900;
-  padding: 7px 10px;
+  line-height: 1;
+  padding: 8px 9px;
 }
 
 .tag {
   background: #f4e5d0;
   border-radius: 999px;
   color: var(--terra-dark);
-  font-size: 0.76rem;
+  font-size: 0.7rem;
   font-weight: 800;
-  padding: 6px 9px;
+  padding: 5px 7px;
 }
 
 .tag.soft {
   color: var(--olive-soft);
 }
 
+.status-tag {
+  background: rgba(38, 61, 43, 0.1);
+  color: var(--olive);
+}
+
 .stop-card h3 {
-  margin-bottom: 8px;
-  padding-right: 78px;
+  font-size: 1rem;
+  line-height: 1.18;
+  margin-bottom: 6px;
+  padding-right: 0;
 }
 
 .stop-card p {
   color: var(--muted);
   line-height: 1.45;
+  margin-bottom: 10px;
+}
+
+.stop-details {
+  border-top: 1px solid var(--line);
+  margin-top: 10px;
+  padding-top: 12px;
+}
+
+.stop-details[hidden] {
+  display: none;
 }
 
 .facts {
   display: grid;
-  gap: 8px;
-  margin: 12px 0;
+  gap: 7px;
+  margin: 10px 0;
 }
 
 .fact {
   background: rgba(232, 216, 190, 0.42);
-  border-radius: 12px;
+  border-radius: 10px;
   color: var(--olive);
-  padding: 9px 10px;
+  font-size: 0.86rem;
+  padding: 8px 9px;
+}
+
+.compact-actions {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+}
+
+.compact-actions .compact-button {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.compact-actions .detail-toggle {
+  flex: 0.75 1 0;
 }
 
 .actions,
 .food-actions,
 .admin-actions {
   display: grid;
-  gap: 9px;
+  gap: 8px;
   grid-template-columns: 1fr;
-  margin-top: 12px;
+  margin-top: 10px;
 }
 
 .primary-button,
@@ -319,10 +374,16 @@ textarea {
 .danger-button,
 .icon-button {
   border: 0;
-  border-radius: 13px;
+  border-radius: 11px;
   font-weight: 800;
   min-height: 44px;
   padding: 10px 13px;
+}
+
+.compact-button {
+  font-size: 0.72rem;
+  min-height: 38px;
+  padding: 7px 7px;
 }
 
 .primary-button {
@@ -355,15 +416,15 @@ textarea {
 .food-list {
   border-top: 1px solid var(--line);
   display: grid;
-  gap: 10px;
-  margin-top: 14px;
-  padding-top: 12px;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 10px;
 }
 
 .food-item {
   background: #fff6e8;
-  border-radius: 14px;
-  padding: 10px;
+  border-radius: 12px;
+  padding: 9px;
 }
 
 .food-item.is-tried {

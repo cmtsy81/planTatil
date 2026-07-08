@@ -33,6 +33,10 @@ Bu proje backend, framework, npm veya build sistemi kullanmaz.
 - `Lezzet Editoru`: Mevcut rota kartlarina yemek, kahve, dondurma, tatli ve alisveris onerileri ekler, duzenler ve siler.
 - `Katilimci`: Kartlari gorur, navigasyonu acar, duraklari tamamlandi ve onerileri denedim olarak isaretler.
 
+## Kart Kullanimi
+
+Rota kartlari mobilde hizli tarama icin varsayilan olarak kompakt acilir. Kapali kartta saat, baslik, tur, oncelik, sure, durum, navigasyon ve `Geldim/Gordum` aksiyonlari gorunur. `Detay` butonu veya kartin bos alani ile kart genisler; acik kartta aciklama, adres, bilet/rezervasyon, lezzet onerileri ve role gore duzenleme aksiyonlari yer alir.
+
 ## LocalStorage Mantigi
 
 - Demo rota verisi `data.js` icinden gelir.

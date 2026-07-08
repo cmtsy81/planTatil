@@ -27,3 +27,7 @@ Lezzet Editoru rolune mevcut onerileri duzenleme ve silme yetkisi eklendi. Ayni 
 ## data.js Aktarma Karari
 
 GitHub Pages statik calistigi icin tarayici dogrudan repodaki `data.js` dosyasina yazamaz. Bu nedenle uygulamaya localStorage'daki guncel rota ve lezzet onerilerini `data.js` formatinda indiren bir cikti butonu eklendi. Katilimci tamamlandi/denedim isaretleri kisisel veri olarak disarida tutulur.
+
+## Kompakt Kart Karari
+
+Mobil ekranda rota akisini daha hizli taramak icin kartlar varsayilan olarak kompakt hale getirildi. Sadece siradaki durak ilk acilista otomatik genisler; diger kartlar kullanici istegiyle acilir. Navigasyon ve tamamlandi isaretleme kapali kartta kalir, detay ve rol bazli duzenleme aksiyonlari acik kartta gosterilir.

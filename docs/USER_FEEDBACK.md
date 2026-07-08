@@ -8,4 +8,5 @@
 - Mobil uyumlu, sade ve sik olmali.
 - Kartlarda konum ve navigasyon olmali.
 - Kartlar alt alta veya yilan yol seklinde saat saat gorulebilmeli.
+- Kartlar mobilde daha kompakt olmali, detaylar dokununca acilmali.
 - Ileride bildirim dusunulebilir.

@@ -9,7 +9,9 @@
     role: "admin",
     routes: loadRoutes(),
     completedStops: loadJson(STORAGE_DONE_KEY, {}),
-    triedFood: loadJson(STORAGE_TRIED_KEY, {})
+    triedFood: loadJson(STORAGE_TRIED_KEY, {}),
+    expandedStops: {},
+    initializedRouteViews: {}
   };
 
   const els = {
@@ -80,6 +82,8 @@
       state.routes = structuredClone(DEMO_TRIP_DATA.routes);
       state.completedStops = {};
       state.triedFood = {};
+      state.expandedStops = {};
+      state.initializedRouteViews = {};
       saveRoutes();
       render();
     });
@@ -94,21 +98,28 @@
 
     els.routeList.addEventListener("click", (event) => {
       const button = event.target.closest("button");
-      if (!button) return;
+      if (button) {
+        const stopId = button.dataset.stopId;
+        const foodId = button.dataset.foodId;
 
-      const stopId = button.dataset.stopId;
-      const foodId = button.dataset.foodId;
+        if (button.dataset.action === "toggle-details") toggleStopDetails(stopId);
+        if (button.dataset.action === "navigate") openNavigation(stopId);
+        if (button.dataset.action === "toggle-complete") toggleCompleted(stopId);
+        if (button.dataset.action === "next") jumpToNextStop(stopId);
+        if (button.dataset.action === "edit-stop") openStopDialog(getStop(stopId));
+        if (button.dataset.action === "delete-stop") deleteStop(stopId);
+        if (button.dataset.action === "add-food") openFoodDialog(stopId);
+        if (button.dataset.action === "edit-food") openFoodDialog(stopId, findFood(foodId));
+        if (button.dataset.action === "delete-food") deleteFood(foodId);
+        if (button.dataset.action === "toggle-food") toggleTriedFood(foodId);
+        if (button.dataset.action === "food-map") openFoodMap(foodId);
+        return;
+      }
 
-      if (button.dataset.action === "navigate") openNavigation(stopId);
-      if (button.dataset.action === "toggle-complete") toggleCompleted(stopId);
-      if (button.dataset.action === "next") jumpToNextStop(stopId);
-      if (button.dataset.action === "edit-stop") openStopDialog(getStop(stopId));
-      if (button.dataset.action === "delete-stop") deleteStop(stopId);
-      if (button.dataset.action === "add-food") openFoodDialog(stopId);
-      if (button.dataset.action === "edit-food") openFoodDialog(stopId, findFood(foodId));
-      if (button.dataset.action === "delete-food") deleteFood(foodId);
-      if (button.dataset.action === "toggle-food") toggleTriedFood(foodId);
-      if (button.dataset.action === "food-map") openFoodMap(foodId);
+      const summary = event.target.closest(".stop-summary");
+      if (summary) {
+        toggleStopDetails(summary.closest(".stop-card").dataset.stopId);
+      }
     });
   }
 
@@ -118,6 +129,7 @@
     const city = getSelectedCity();
     const day = city.days.find((item) => item.id === state.dayId);
     const nextStop = findNextStop(stops);
+    initializeExpandedStops(routeKey, nextStop);
 
     els.routeContext.textContent = `${city.name} / ${day.label}`;
     els.stopCount.textContent = stops.length;
@@ -184,7 +196,8 @@
 
   function renderStop(stop, nextStop) {
     const isCompleted = Boolean(state.completedStops[stop.id]);
-    const status = getTimeStatus(stop, nextStop);
+    const status = getTimeStatus(stop, nextStop, isCompleted);
+    const isExpanded = Boolean(state.expandedStops[stop.id]);
     const adminActions = state.role === "admin"
       ? `<div class="admin-actions">
           <button class="secondary-button" data-action="edit-stop" data-stop-id="${stop.id}" type="button">Düzenle</button>
@@ -196,31 +209,44 @@
       : "";
 
     return `
-      <article class="stop-card ${status.cardClass} ${isCompleted ? "is-completed" : ""}">
-        <div class="stop-meta">
-          <span class="time">${stop.time}</span>
-          <span class="tag">${escapeHtml(stop.type)}</span>
-          <span class="tag soft">${status.label}</span>
-          <span class="tag soft">${stop.priority}</span>
+      <article class="stop-card ${status.cardClass} ${isCompleted ? "is-completed" : ""} ${isExpanded ? "is-expanded" : ""}" data-stop-id="${stop.id}">
+        <div class="stop-summary">
+          <div class="stop-main">
+            <span class="time">${stop.time}</span>
+            <div class="stop-title-block">
+              <h3>${escapeHtml(stop.title)}</h3>
+              <div class="stop-meta">
+                <span class="tag">${escapeHtml(stop.type)}</span>
+                <span class="tag soft">${stop.priority}</span>
+                <span class="tag soft">${escapeHtml(stop.duration || "-")}</span>
+                <span class="tag status-tag">${status.label}</span>
+              </div>
+            </div>
+          </div>
+          <div class="compact-actions">
+            <button class="primary-button compact-button" data-action="navigate" data-stop-id="${stop.id}" type="button">Navigasyonu Aç</button>
+            <button class="secondary-button compact-button" data-action="toggle-complete" data-stop-id="${stop.id}" type="button">
+              ${isCompleted ? "İşareti Kaldır" : "Geldim / Gördüm"}
+            </button>
+            <button class="ghost-button compact-button detail-toggle" data-action="toggle-details" data-stop-id="${stop.id}" type="button" aria-expanded="${isExpanded}">
+              ${isExpanded ? "Kapat ↑" : "Detay ↓"}
+            </button>
+          </div>
         </div>
-        <h3>${escapeHtml(stop.title)}</h3>
-        <p>${escapeHtml(stop.description)}</p>
-        <div class="facts">
-          <div class="fact"><strong>Sure:</strong> ${escapeHtml(stop.duration || "-")}</div>
-          <div class="fact"><strong>Adres:</strong> ${escapeHtml(stop.address || "-")}</div>
-          <div class="fact"><strong>Bilet:</strong> ${stop.ticketRequired ? "Gerekli" : "Gerekli degil"}</div>
-          <div class="fact"><strong>Rezervasyon:</strong> ${stop.reservationRequired ? "Gerekli" : "Gerekli degil"}</div>
-        </div>
-        <div class="actions">
-          <button class="primary-button" data-action="navigate" data-stop-id="${stop.id}" type="button">Navigasyonu Ac</button>
-          <button class="secondary-button" data-action="toggle-complete" data-stop-id="${stop.id}" type="button">
-            ${isCompleted ? "İşareti Kaldır" : "Geldim / Gördüm"}
-          </button>
+        <div class="stop-details" ${isExpanded ? "" : "hidden"}>
+          <p>${escapeHtml(stop.description)}</p>
+          <div class="facts">
+            <div class="fact"><strong>Adres:</strong> ${escapeHtml(stop.address || "-")}</div>
+            <div class="fact"><strong>Bilet:</strong> ${stop.ticketRequired ? "Gerekli" : "Gerekli değil"}</div>
+            <div class="fact"><strong>Rezervasyon:</strong> ${stop.reservationRequired ? "Gerekli" : "Gerekli değil"}</div>
+          </div>
+          ${renderFoodSuggestions(stop.foodSuggestions || [], stop.id)}
+          ${foodEditorAction ? `<div class="food-actions">${foodEditorAction}</div>` : ""}
+          ${adminActions}
+          <div class="actions detail-actions">
           <button class="ghost-button" data-action="next" data-stop-id="${stop.id}" type="button">Sonraki Durağa Geç</button>
+          </div>
         </div>
-        ${renderFoodSuggestions(stop.foodSuggestions || [], stop.id)}
-        ${foodEditorAction ? `<div class="food-actions">${foodEditorAction}</div>` : ""}
-        ${adminActions}
       </article>
     `;
   }
@@ -368,6 +394,7 @@
     if (!confirm("Bu durak silinsin mi?")) return;
     state.routes[getRouteKey()] = getCurrentStops().filter((stop) => stop.id !== stopId);
     delete state.completedStops[stopId];
+    delete state.expandedStops[stopId];
     saveRoutes();
     saveJson(STORAGE_DONE_KEY, state.completedStops);
     render();
@@ -417,11 +444,29 @@
     render();
   }
 
+  function initializeExpandedStops(routeKey, nextStop) {
+    if (state.initializedRouteViews[routeKey]) return;
+    if (nextStop) {
+      state.expandedStops[nextStop.id] = true;
+    }
+    state.initializedRouteViews[routeKey] = true;
+  }
+
+  function toggleStopDetails(stopId) {
+    state.expandedStops[stopId] = !state.expandedStops[stopId];
+    if (!state.expandedStops[stopId]) {
+      delete state.expandedStops[stopId];
+    }
+    render();
+  }
+
   function jumpToNextStop(stopId) {
     const stops = getCurrentStops();
     const index = stops.findIndex((stop) => stop.id === stopId);
     const next = stops[index + 1];
     if (!next) return;
+    state.expandedStops[next.id] = true;
+    render();
     document.querySelector(`[data-stop-id="${next.id}"]`)?.closest(".stop-card")?.scrollIntoView({
       behavior: "smooth",
       block: "center"
@@ -435,14 +480,17 @@
       || null;
   }
 
-  function getTimeStatus(stop, nextStop) {
+  function getTimeStatus(stop, nextStop, isCompleted) {
+    if (isCompleted) {
+      return { label: "tamamlandı", cardClass: "is-done" };
+    }
     if (nextStop?.id === stop.id) {
       return { label: "sıradaki durak", cardClass: "is-next" };
     }
     if (toMinutes(stop.time) < (new Date().getHours() * 60 + new Date().getMinutes())) {
       return { label: "geçmiş durak", cardClass: "is-past" };
     }
-    return { label: "planlandı", cardClass: "" };
+    return { label: "yaklaşan", cardClass: "is-upcoming" };
   }
 
   function minutesUntil(time) {
