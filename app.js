@@ -31,6 +31,8 @@
     stopDialogTitle: document.querySelector("#stopDialogTitle"),
     foodDialog: document.querySelector("#foodDialog"),
     foodForm: document.querySelector("#foodForm"),
+    foodDialogTitle: document.querySelector("#foodDialogTitle"),
+    saveFoodButton: document.querySelector("#saveFoodButton"),
     closeStopDialog: document.querySelector("#closeStopDialog"),
     cancelStopDialog: document.querySelector("#cancelStopDialog"),
     closeFoodDialog: document.querySelector("#closeFoodDialog"),
@@ -100,6 +102,8 @@
       if (button.dataset.action === "edit-stop") openStopDialog(getStop(stopId));
       if (button.dataset.action === "delete-stop") deleteStop(stopId);
       if (button.dataset.action === "add-food") openFoodDialog(stopId);
+      if (button.dataset.action === "edit-food") openFoodDialog(stopId, findFood(foodId));
+      if (button.dataset.action === "delete-food") deleteFood(foodId);
       if (button.dataset.action === "toggle-food") toggleTriedFood(foodId);
       if (button.dataset.action === "food-map") openFoodMap(foodId);
     });
@@ -211,14 +215,14 @@
           </button>
           <button class="ghost-button" data-action="next" data-stop-id="${stop.id}" type="button">Sonraki Durağa Geç</button>
         </div>
-        ${renderFoodSuggestions(stop.foodSuggestions || [])}
+        ${renderFoodSuggestions(stop.foodSuggestions || [], stop.id)}
         ${foodEditorAction ? `<div class="food-actions">${foodEditorAction}</div>` : ""}
         ${adminActions}
       </article>
     `;
   }
 
-  function renderFoodSuggestions(items) {
+  function renderFoodSuggestions(items, stopId) {
     if (!items.length) {
       return `<div class="food-list"><p>Lezzet önerisi henüz yok.</p></div>`;
     }
@@ -232,6 +236,10 @@
                 ${tried ? "Denedim İşaretini Kaldır" : "Denedim"}
               </button>`
             : "";
+          const editorActions = state.role === "foodEditor"
+            ? `<button class="secondary-button" data-action="edit-food" data-stop-id="${stopId}" data-food-id="${item.id}" type="button">Düzenle</button>
+               <button class="danger-button" data-action="delete-food" data-food-id="${item.id}" type="button">Sil</button>`
+            : "";
           return `
             <div class="food-item ${tried ? "is-tried" : ""}">
               <span class="tag">${escapeHtml(item.type)}</span>
@@ -241,6 +249,7 @@
               <div class="food-actions">
                 <button class="ghost-button" data-action="food-map" data-food-id="${item.id}" type="button">Haritada Aç</button>
                 ${tryButton}
+                ${editorActions}
               </div>
             </div>
           `;
@@ -297,13 +306,19 @@
     render();
   }
 
-  function openFoodDialog(stopId) {
+  function openFoodDialog(stopId, food) {
+    const isEdit = Boolean(food);
+    els.foodDialogTitle.textContent = isEdit
+      ? `${food.title} önerisini düzenle`
+      : "Lezzet önerisi ekle";
+    els.saveFoodButton.textContent = isEdit ? "Öneriyi Güncelle" : "Öneri Ekle";
     document.querySelector("#foodStopId").value = stopId;
-    document.querySelector("#foodType").value = "yemek";
-    document.querySelector("#foodPrice").value = "";
-    document.querySelector("#foodTitle").value = "";
-    document.querySelector("#foodMapLink").value = "";
-    document.querySelector("#foodNote").value = "";
+    document.querySelector("#foodId").value = food?.id || "";
+    document.querySelector("#foodType").value = food?.type || "yemek";
+    document.querySelector("#foodPrice").value = food?.price || "";
+    document.querySelector("#foodTitle").value = food?.title || "";
+    document.querySelector("#foodMapLink").value = food?.mapLink || "";
+    document.querySelector("#foodNote").value = food?.note || "";
     els.foodDialog.showModal();
   }
 
@@ -312,17 +327,37 @@
     const stop = getStop(document.querySelector("#foodStopId").value);
     if (!stop) return;
 
-    stop.foodSuggestions = stop.foodSuggestions || [];
-    stop.foodSuggestions.push({
-      id: `food-${Date.now()}`,
+    const existingId = document.querySelector("#foodId").value;
+    const food = {
+      id: existingId || `food-${Date.now()}`,
       type: document.querySelector("#foodType").value,
       price: document.querySelector("#foodPrice").value.trim(),
       title: document.querySelector("#foodTitle").value.trim(),
       mapLink: document.querySelector("#foodMapLink").value.trim(),
       note: document.querySelector("#foodNote").value.trim()
-    });
+    };
+
+    stop.foodSuggestions = stop.foodSuggestions || [];
+    const index = stop.foodSuggestions.findIndex((item) => item.id === existingId);
+    if (index >= 0) {
+      stop.foodSuggestions[index] = food;
+    } else {
+      stop.foodSuggestions.push(food);
+    }
     saveRoutes();
     els.foodDialog.close();
+    render();
+  }
+
+  function deleteFood(foodId) {
+    const match = findFoodWithStop(foodId);
+    if (!match) return;
+    if (!confirm("Bu öneriyi silmek istediğine emin misin?")) return;
+
+    match.stop.foodSuggestions = match.stop.foodSuggestions.filter((item) => item.id !== foodId);
+    delete state.triedFood[foodId];
+    saveRoutes();
+    saveJson(STORAGE_TRIED_KEY, state.triedFood);
     render();
   }
 
@@ -413,10 +448,15 @@
   }
 
   function findFood(foodId) {
+    const match = findFoodWithStop(foodId);
+    return match?.food || null;
+  }
+
+  function findFoodWithStop(foodId) {
     for (const stops of Object.values(state.routes)) {
       for (const stop of stops) {
         const found = (stop.foodSuggestions || []).find((item) => item.id === foodId);
-        if (found) return found;
+        if (found) return { food: found, stop };
       }
     }
     return null;

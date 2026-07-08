@@ -30,13 +30,13 @@ Bu proje backend, framework, npm veya build sistemi kullanmaz.
 ## Roller
 
 - `Admin`: Rota karti ekler, duzenler ve siler.
-- `Lezzet Editoru`: Mevcut rota kartlarina yemek, kahve, dondurma, tatli ve alisveris onerileri ekler.
+- `Lezzet Editoru`: Mevcut rota kartlarina yemek, kahve, dondurma, tatli ve alisveris onerileri ekler, duzenler ve siler.
 - `Katilimci`: Kartlari gorur, navigasyonu acar, duraklari tamamlandi ve onerileri denedim olarak isaretler.
 
 ## LocalStorage Mantigi
 
 - Demo rota verisi `data.js` icinden gelir.
-- `plantatil.routes.v1`: Admin rota degisiklikleri ve lezzet onerileri.
+- `plantatil.routes.v1`: Admin rota degisiklikleri ile Lezzet Editoru ekleme, duzenleme ve silme islemleri.
 - `plantatil.completedStops.v1`: Katilimci durak tamamlandi isaretleri.
 - `plantatil.triedFood.v1`: Katilimci lezzet onerisi denedim isaretleri.
 - `Verileri Sifirla` butonu bu kayitlari temizler ve demo veriye doner.

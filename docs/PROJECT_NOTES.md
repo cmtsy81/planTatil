@@ -19,3 +19,7 @@ Ileride Supabase veya Firebase eklenerek gercek kullanici girisi, rol yetkileri 
 ## Ilk Hedef
 
 Ilk hedef Roma / Gun 1 demosudur. Diger sehir ve gunler bos durum ekraniyla hazir tutuldu.
+
+## Lezzet Onerisi Duzenleme Karari
+
+Lezzet Editoru rolune mevcut onerileri duzenleme ve silme yetkisi eklendi. Ayni dialog hem yeni oneri ekleme hem de var olan oneriyi guncelleme icin kullanilir. Silme islemi sadece ilgili lezzet onerisi listesini etkiler; ana rota karti korunur.
