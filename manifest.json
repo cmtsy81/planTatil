@@ -1,0 +1,22 @@
+{
+  "name": "PlanTatil İtalya Gezi Panosu",
+  "short_name": "PlanTatil",
+  "description": "Mobil öncelikli gezi rota panosu prototipi.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fbf3e5",
+  "theme_color": "#263d2b",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.jpg",
+      "type": "image/jpeg",
+      "sizes": "192x192"
+    },
+    {
+      "src": "icon-512.jpg",
+      "type": "image/jpeg",
+      "sizes": "512x512"
+    }
+  ]
+}

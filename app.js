@@ -55,6 +55,7 @@
     renderDayOptions();
     bindEvents();
     render();
+    registerServiceWorker();
   }
 
   function bindEvents() {
@@ -225,20 +226,24 @@
             </button>
           </div>
         </div>
-        <div class="stop-details" ${isExpanded ? "" : "hidden"}>
-          <p>${escapeHtml(stop.description)}</p>
-          <div class="facts">
-            <div class="fact"><strong>Adres:</strong> ${escapeHtml(stop.address || "-")}</div>
-            <div class="fact"><strong>Bilet:</strong> ${stop.ticketRequired ? "Gerekli" : "Gerekli değil"}</div>
-            <div class="fact"><strong>Rezervasyon:</strong> ${stop.reservationRequired ? "Gerekli" : "Gerekli değil"}</div>
-            ${stop.ticketNote ? `<div class="fact"><strong>Bilet notu:</strong> ${escapeHtml(stop.ticketNote)}</div>` : ""}
-            ${stop.transportNote ? `<div class="fact"><strong>Ulasim notu:</strong> ${escapeHtml(stop.transportNote)}</div>` : ""}
-          </div>
-          ${renderFoodSuggestions(stop.foodSuggestions || [], stop.id)}
-          ${foodEditorAction ? `<div class="food-actions">${foodEditorAction}</div>` : ""}
-          ${adminActions}
-          <div class="detail-actions">
-            <button class="ghost-button micro-button" data-action="next" data-stop-id="${stop.id}" type="button">Sonraki durağa geç</button>
+        <div class="stop-details-wrapper">
+          <div class="stop-details-content">
+            <div class="stop-details">
+              <p>${escapeHtml(stop.description)}</p>
+              <div class="facts">
+                <div class="fact"><strong>Adres:</strong> ${escapeHtml(stop.address || "-")}</div>
+                <div class="fact"><strong>Bilet:</strong> ${stop.ticketRequired ? "Gerekli" : "Gerekli değil"}</div>
+                <div class="fact"><strong>Rezervasyon:</strong> ${stop.reservationRequired ? "Gerekli" : "Gerekli değil"}</div>
+                ${stop.ticketNote ? `<div class="fact"><strong>Bilet notu:</strong> ${escapeHtml(stop.ticketNote)}</div>` : ""}
+                ${stop.transportNote ? `<div class="fact"><strong>Ulasim notu:</strong> ${escapeHtml(stop.transportNote)}</div>` : ""}
+              </div>
+              ${renderFoodSuggestions(stop.foodSuggestions || [], stop.id)}
+              ${foodEditorAction ? `<div class="food-actions">${foodEditorAction}</div>` : ""}
+              ${adminActions}
+              <div class="detail-actions">
+                <button class="ghost-button micro-button" data-action="next" data-stop-id="${stop.id}" type="button">Sonraki durağa geç</button>
+              </div>
+            </div>
           </div>
         </div>
       </article>
@@ -313,7 +318,7 @@
     const targetRouteKey = `${state.cityId}:${targetDayId}`;
     const existingStop = existingId ? findStopById(existingId) : null;
     const stop = {
-      id: existingId || `stop-${Date.now()}`,
+      id: existingId || (crypto.randomUUID ? `stop-${crypto.randomUUID()}` : `stop-${Date.now()}`),
       time: document.querySelector("#stopTime").value,
       title: document.querySelector("#stopTitle").value.trim(),
       type: document.querySelector("#stopType").value,
@@ -371,7 +376,7 @@
 
     const existingId = document.querySelector("#foodId").value;
     const food = {
-      id: existingId || `food-${Date.now()}`,
+      id: existingId || (crypto.randomUUID ? `food-${crypto.randomUUID()}` : `food-${Date.now()}`),
       type: document.querySelector("#foodType").value,
       price: document.querySelector("#foodPrice").value.trim(),
       title: document.querySelector("#foodTitle").value.trim(),
@@ -685,27 +690,15 @@
     render();
   }
 
-  function addDay() {
-    const city = getSelectedCity();
-    if (!city) return;
-
-    const input = prompt("Yeni gün adı ne olsun?", `Gün ${city.days.length + 1}`);
-    const label = input?.trim();
-    if (!label) return;
-
-    const nextIndex = city.days.reduce((max, day) => {
-      const match = /^day-(\d+)$/.exec(day.id);
-      return match ? Math.max(max, Number(match[1])) : max;
-    }, 0) + 1;
-    const dayId = `day-${nextIndex}`;
-
-    city.days.push({ id: dayId, label });
-    state.dayId = dayId;
-    state.routes[getRouteKey()] = state.routes[getRouteKey()] || [];
-    saveCities();
-    saveRoutes();
-    renderDayOptions();
-    render();
+  function registerServiceWorker() {
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker
+          .register("service-worker.js")
+          .then((reg) => console.log("Service Worker registered successfully:", reg.scope))
+          .catch((err) => console.error("Service Worker registration failed:", err));
+      });
+    }
   }
 
   function saveJson(key, value) {
