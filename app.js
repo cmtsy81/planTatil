@@ -3,6 +3,17 @@
   const STORAGE_META_KEY = "plantatil.tripMeta.v1";
   const STORAGE_DONE_KEY = "plantatil.completedStops.v1";
   const STORAGE_TRIED_KEY = "plantatil.triedFood.v1";
+  const STORAGE_DATA_VERSION_KEY = "plantatil.dataVersion.v1";
+
+  // Check if data.js version is newer than the stored localStorage version
+  const currentDataVersion = DEMO_TRIP_DATA.version || 1;
+  const storedDataVersion = parseInt(localStorage.getItem(STORAGE_DATA_VERSION_KEY) || "0", 10);
+
+  if (currentDataVersion > storedDataVersion) {
+    localStorage.removeItem(STORAGE_ROUTE_KEY);
+    localStorage.removeItem(STORAGE_META_KEY);
+    localStorage.setItem(STORAGE_DATA_VERSION_KEY, currentDataVersion.toString());
+  }
 
   const state = {
     cityId: "rome",

@@ -1,4 +1,5 @@
 const DEMO_TRIP_DATA = {
+  "version": 2,
   "cities": [
     {
       "id": "rome",
