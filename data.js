@@ -30,31 +30,70 @@ const DEMO_TRIP_DATA = {
       "id": "florence",
       "name": "Floransa",
       "days": [
-        { "id": "day-1", "label": "2 Eyl - Varış Akşamı" },
-        { "id": "day-2", "label": "3 Eyl - Floransa" },
-        { "id": "day-3", "label": "4 Eyl - Pisa" },
-        { "id": "day-4", "label": "5 Eyl - Ayrılış Sabahı" }
+        {
+          "id": "day-1",
+          "label": "2 Eyl - Varış Akşamı"
+        },
+        {
+          "id": "day-2",
+          "label": "3 Eyl - Floransa"
+        },
+        {
+          "id": "day-3",
+          "label": "4 Eyl - Pisa"
+        },
+        {
+          "id": "day-4",
+          "label": "5 Eyl - Ayrılış Sabahı"
+        }
       ]
     },
     {
       "id": "venice",
       "name": "Venedik",
       "days": [
-        { "id": "day-1", "label": "5 Eyl - Varış Akşamı" },
-        { "id": "day-2", "label": "6 Eyl - Venedik" },
-        { "id": "day-3", "label": "7 Eyl - McArthurGlen" },
-        { "id": "day-4", "label": "8 Eyl - Ayrılış Sabahı" }
+        {
+          "id": "day-1",
+          "label": "5 Eyl - Varış Akşamı"
+        },
+        {
+          "id": "day-2",
+          "label": "6 Eyl - Venedik"
+        },
+        {
+          "id": "day-3",
+          "label": "7 Eyl - McArthurGlen"
+        },
+        {
+          "id": "day-4",
+          "label": "8 Eyl - Ayrılış Sabahı"
+        }
       ]
     },
     {
       "id": "milan",
       "name": "Milano",
       "days": [
-        { "id": "day-1", "label": "8 Eyl - Varış Akşamı" },
-        { "id": "day-2", "label": "9 Eyl - Milano" },
-        { "id": "day-3", "label": "10 Eyl - Como Gölü" },
-        { "id": "day-4", "label": "11 Eyl - Milano" },
-        { "id": "day-5", "label": "12 Eyl - Ayrılış Sabahı" }
+        {
+          "id": "day-1",
+          "label": "8 Eyl - Varış Akşamı"
+        },
+        {
+          "id": "day-2",
+          "label": "9 Eyl - Milano"
+        },
+        {
+          "id": "day-3",
+          "label": "10 Eyl - Como Gölü"
+        },
+        {
+          "id": "day-4",
+          "label": "11 Eyl - Milano"
+        },
+        {
+          "id": "day-5",
+          "label": "12 Eyl - Ayrılış Sabahı"
+        }
       ]
     }
   ],
@@ -534,13 +573,225 @@ const DEMO_TRIP_DATA = {
     "rome:day-3": [
       {
         "id": "rome-3-route-map",
+        "time": "06:45",
+        "title": "Günün Haritalı Rotası",
+        "type": "rota özeti",
+        "description": "Pazartesi için Pompei ve Napoli günü. Rota Roma Termini ile başlar, Napoli keşfinden sonra Roma Termini dönüşünde biter; eve dönüş haritaya eklenmez.",
+        "duration": "Tüm gün",
+        "address": "Roma Termini, Rome, Italy",
+        "mapLink": "https://www.google.com/maps/dir/?api=1&origin=Roma+Termini&destination=Roma+Termini&waypoints=Napoli+Centrale|Pompei+Scavi+-+Villa+dei+Misteri|Pompeii+Archaeological+Park|Napoli+Centrale|Spaccanapoli+Naples|Via+San+Gregorio+Armeno+Naples|Piazza+del+Plebiscito+Naples|Lungomare+Caracciolo+Naples",
+        "ticketRequired": false,
+        "reservationRequired": false,
+        "priority": "mutlaka",
+        "transportNote": "Roma-Napoli hızlı tren, Napoli-Pompei için Circumvesuviana veya Campania Express düşünülür. Geç dönüşte Roma Termini’den eve taksi mantıklı olabilir.",
+        "foodSuggestions": []
+      },
+      {
+        "id": "rome-3-hotel",
+        "time": "06:45",
+        "title": "Evden Termini’ye çıkış",
+        "type": "ulaşım",
+        "description": "Günübirlik Pompei/Napoli için erken çıkış. Su, şapka, powerbank, tren biletleri ve Pompei bileti kontrol edilir.",
+        "duration": "30 dk",
+        "address": "Via Belisario, 8, 00187 Roma RM, Italy",
+        "mapLink": "https://www.google.com/maps/dir/?api=1&origin=Via+Belisario+8+Rome&destination=Roma+Termini",
+        "ticketRequired": false,
+        "reservationRequired": false,
+        "priority": "mutlaka",
+        "transportNote": "Sabah erken olduğu için yürüyüş yerine kısa taksi veya otobüs daha rahat olabilir.",
+        "foodSuggestions": []
+      },
+      {
+        "id": "rome-3-termini",
+        "time": "07:20",
+        "title": "Roma Termini",
+        "type": "ulaşım",
+        "description": "Napoli hızlı treni için peron kontrolü ve kısa kahve/su alışverişi.",
+        "duration": "30 dk",
+        "address": "Roma Termini, Rome, Italy",
+        "mapLink": "https://www.google.com/maps/search/?api=1&query=Roma+Termini",
+        "ticketRequired": true,
+        "reservationRequired": true,
+        "priority": "mutlaka",
+        "ticketNote": "Roma-Napoli hızlı tren biletini önceden almak iyi olur. Dönüş saati geç seçilecekse bilet saatini netleştirin.",
+        "foodSuggestions": []
+      },
+      {
+        "id": "rome-3-naples-train",
+        "time": "08:00",
+        "title": "Hızlı tren: Roma → Napoli",
+        "type": "ulaşım",
+        "description": "Yaklaşık 1 saatlik hızlı trenle Napoli Centrale’ye geçiş.",
+        "duration": "75 dk",
+        "address": "Napoli Centrale, Naples, Italy",
+        "mapLink": "https://www.google.com/maps/search/?api=1&query=Napoli+Centrale",
+        "ticketRequired": true,
+        "reservationRequired": true,
+        "priority": "mutlaka",
+        "ticketNote": "Frecciarossa veya Italo saatlerine göre alınabilir.",
+        "foodSuggestions": []
+      },
+      {
+        "id": "rome-3-pompeii-transfer",
+        "time": "09:30",
+        "title": "Napoli → Pompei Scavi geçişi",
+        "type": "ulaşım",
+        "description": "Napoli’den Pompei Scavi - Villa dei Misteri durağına geçiş. Peron ve hat tabelalarını dikkatli takip edin.",
+        "duration": "60 dk",
+        "address": "Pompei Scavi - Villa dei Misteri, Pompei, Italy",
+        "mapLink": "https://www.google.com/maps/search/?api=1&query=Pompei+Scavi+Villa+dei+Misteri",
+        "ticketRequired": true,
+        "reservationRequired": false,
+        "priority": "mutlaka",
+        "transportNote": "Circumvesuviana daha sık, Campania Express daha konforlu olabilir. Dönüş saatini de akılda tutun.",
+        "foodSuggestions": []
+      },
+      {
+        "id": "rome-3-pompeii",
+        "time": "10:45",
+        "title": "Pompei Arkeolojik Alanı",
+        "type": "müze",
+        "description": "Forum, Teatro Grande, Via dell’Abbondanza, önemli evler ve amfitiyatro hattı. Çocuklarla 3,5-4 saat ideal; çok uzatmak yorabilir.",
+        "duration": "240 dk",
+        "address": "Via Villa dei Misteri, 2, 80045 Pompei NA, Italy",
+        "mapLink": "https://www.google.com/maps/search/?api=1&query=Pompeii+Archaeological+Park",
+        "ticketRequired": true,
+        "reservationRequired": true,
+        "priority": "mutlaka",
+        "ticketNote": "Pompei giriş biletini önceden alın. Güneş, taş zemin ve uzun yürüyüş için rahat ayakkabı şart.",
+        "foodSuggestions": []
+      },
+      {
+        "id": "rome-3-naples-return",
+        "time": "15:15",
+        "title": "Pompei → Napoli dönüşü",
+        "type": "ulaşım",
+        "description": "Pompei gezisini bitirip Napoli merkezine dönme zamanı. Buradan Napoli kısa şehir keşfi başlar.",
+        "duration": "60 dk",
+        "address": "Napoli Centrale, Naples, Italy",
+        "mapLink": "https://www.google.com/maps/dir/?api=1&origin=Pompei+Scavi+-+Villa+dei+Misteri&destination=Napoli+Centrale",
+        "ticketRequired": true,
+        "reservationRequired": false,
+        "priority": "mutlaka",
+        "foodSuggestions": []
+      },
+      {
+        "id": "rome-3-spaccanapoli",
+        "time": "16:30",
+        "title": "Spaccanapoli yürüyüşü",
+        "type": "gezi",
+        "description": "Napoli’nin en karakterli tarihi merkez hattı. Kısa ama çok canlı bir şehir hissi verir.",
+        "duration": "45 dk",
+        "address": "Spaccanapoli, Naples, Italy",
+        "mapLink": "https://www.google.com/maps/search/?api=1&query=Spaccanapoli+Naples",
+        "ticketRequired": false,
+        "reservationRequired": false,
+        "priority": "mutlaka",
+        "transportNote": "Napoli Centrale’den metro/taksi veya yürüyüşle merkeze geçilebilir; kalabalıkta çantalara dikkat.",
+        "foodSuggestions": [
+          {
+            "id": "food-naples-sfogliatella",
+            "type": "tatlı",
+            "title": "Sfogliatella molası",
+            "note": "Napoli’de kısa tatlı/kahve molası için iyi seçim. Çıtır hamurlu klasik tatlıyı deneyin.",
+            "price": "€",
+            "mapLink": "https://www.google.com/maps/search/?api=1&query=sfogliatella+near+Spaccanapoli+Naples"
+          }
+        ]
+      },
+      {
+        "id": "rome-3-san-gregorio",
+        "time": "17:20",
+        "title": "Via San Gregorio Armeno",
+        "type": "gezi",
+        "description": "Küçük dükkanlar, figürler ve Napoli sokak atmosferi için kısa ama eğlenceli bir durak.",
+        "duration": "35 dk",
+        "address": "Via San Gregorio Armeno, Naples, Italy",
+        "mapLink": "https://www.google.com/maps/search/?api=1&query=Via+San+Gregorio+Armeno+Naples",
+        "ticketRequired": false,
+        "reservationRequired": false,
+        "priority": "opsiyonel",
+        "foodSuggestions": []
+      },
+      {
+        "id": "rome-3-plebiscito",
+        "time": "18:15",
+        "title": "Piazza del Plebiscito",
+        "type": "gezi",
+        "description": "Napoli’nin büyük meydanı. Gün batımına yakın ferah bir mola ve fotoğraf noktası.",
+        "duration": "35 dk",
+        "address": "Piazza del Plebiscito, Naples, Italy",
+        "mapLink": "https://www.google.com/maps/search/?api=1&query=Piazza+del+Plebiscito+Naples",
+        "ticketRequired": false,
+        "reservationRequired": false,
+        "priority": "opsiyonel",
+        "foodSuggestions": []
+      },
+      {
+        "id": "rome-3-lungomare",
+        "time": "19:00",
+        "title": "Lungomare / deniz kenarı kısa yürüyüş",
+        "type": "gezi",
+        "description": "Hava ve enerji uygunsa Napoli Körfezi manzarası için kısa deniz kenarı yürüyüşü.",
+        "duration": "35 dk",
+        "address": "Lungomare Caracciolo, Naples, Italy",
+        "mapLink": "https://www.google.com/maps/search/?api=1&query=Lungomare+Caracciolo+Naples",
+        "ticketRequired": false,
+        "reservationRequired": false,
+        "priority": "opsiyonel",
+        "transportNote": "Yorgunluk varsa bu durak atlanıp direkt pizzaya veya istasyona geçilebilir.",
+        "foodSuggestions": []
+      },
+      {
+        "id": "rome-3-naples-pizza",
+        "time": "19:45",
+        "title": "Napoli pizza molası",
+        "type": "yemek molası",
+        "description": "Napoli’ye kadar gelmişken pizzayı burada yemek güzel final olur. Kuyruk çok uzunsa alternatif pizzeria seçin.",
+        "duration": "75 dk",
+        "address": "Centro Storico, Naples, Italy",
+        "mapLink": "https://www.google.com/maps/search/?api=1&query=best+pizza+Centro+Storico+Naples",
+        "ticketRequired": false,
+        "reservationRequired": false,
+        "priority": "mutlaka",
+        "foodSuggestions": [
+          {
+            "id": "food-naples-pizza-margherita",
+            "type": "yemek",
+            "title": "Napoli usulü Margherita",
+            "note": "Klasik Margherita veya Marinara deneyin. Çocuklarla paylaşmak kolay olur.",
+            "price": "€€",
+            "mapLink": "https://www.google.com/maps/search/?api=1&query=pizzeria+margherita+Naples+Centro+Storico"
+          }
+        ]
+      },
+      {
+        "id": "rome-3-train-rome",
+        "time": "21:15",
+        "title": "Hızlı tren: Napoli → Roma",
+        "type": "ulaşım",
+        "description": "Geç dönüş planı. Roma’ya varınca ekstra durak yok; Termini’den eve geçip dinlenme.",
+        "duration": "75 dk",
+        "address": "Roma Termini, Rome, Italy",
+        "mapLink": "https://www.google.com/maps/search/?api=1&query=Napoli+Centrale+to+Roma+Termini+train",
+        "ticketRequired": true,
+        "reservationRequired": true,
+        "priority": "mutlaka",
+        "ticketNote": "Dönüş trenini çok geçe bırakırken çocukların yorgunluğunu hesaba katın. Bilet saatini kesinleştirmeden önce Napoli programına bakın.",
+        "transportNote": "Roma Termini’den eve dönüş bu rota kartına eklenmedi; geç saatte taksi en rahat seçenek olabilir.",
+        "foodSuggestions": []
+      }
+    ],
+    "rome:day-4": [
+      {
+        "id": "rome-4-route-map",
         "time": "08:00",
         "title": "Günün Haritalı Rotası",
         "type": "rota özeti",
-        "description": "Pazartesi Vatikan ve Prati günü. Harita eve geri dönüş eklemez.",
+        "description": "Salı Vatikan ve Prati günü. Sabah erken saatte San Pietro Bazilikası sırasını atlatıp, öğleden sonra 13:00'te Vatikan Müzeleri'ne giriş yapıyoruz. Harita eve geri dönüş eklemez.",
         "duration": "Tüm gün",
         "address": "Via Belisario, 8, 00187 Roma RM, Italy",
-        "mapLink": "https://www.google.com/maps/dir/?api=1&origin=Via+Belisario+8+00187+Roma+RM+Italy&destination=Prati+Rome&waypoints=Vatican+Museums|Sistine+Chapel|Prati+Rome|St.+Peter%27s+Basilica|Ponte+Sant%27Angelo|Castel+Sant%27Angelo",
+        "mapLink": "https://www.google.com/maps/dir/?api=1&origin=Via+Belisario+8+00187+Roma+RM+Italy&destination=Prati+Rome&waypoints=St.+Peter%27s+Basilica|Prati+Rome|Vatican+Museums|Sistine+Chapel|Ponte+Sant%27Angelo|Castel+Sant%27Angelo",
         "ticketRequired": false,
         "reservationRequired": false,
         "priority": "mutlaka",
@@ -548,56 +799,56 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-3-hotel",
+        "id": "rome-4-hotel",
         "time": "08:00",
-        "title": "Evden Vatikan'a çıkış",
+        "title": "Evden Vatikan'a (San Pietro'ya) çıkış",
         "type": "ulaşım",
-        "description": "Bilet saatinize göre erken çıkın. Güvenlik sırası ve müze girişi için tampon süre bırakın.",
+        "description": "Erken saatte çıkmak, San Pietro Bazilikası önündeki uzun güvenlik kuyruklarını atlatmanın en iyi yoludur.",
         "duration": "45 dk",
         "address": "Via Belisario, 8, 00187 Roma RM, Italy",
         "mapLink": "https://www.google.com/maps/search/?api=1&query=Via+Belisario%2C+8%2C+00187+Roma+RM%2C+Italy",
         "ticketRequired": false,
         "reservationRequired": false,
         "priority": "mutlaka",
-        "transportNote": "Metro A: Barberini/Repubblica → Ottaviano. Ottaviano'dan Vatikan Müzeleri girişine yürüyüş yaklaşık 10-15 dk.",
+        "transportNote": "Metro A: Barberini/Repubblica → Ottaviano. Ottaviano'dan San Pietro Meydanı'na yürüyüş yaklaşık 10-15 dk.",
         "foodSuggestions": []
       },
       {
-        "id": "rome-3-vatican-museums",
-        "time": "09:00",
-        "title": "Vatikan Müzeleri",
-        "type": "müze",
-        "description": "Vatikan gününün ana durağı. Harita gibi kullanmak için içeride önceliği Sistine rotasına ve önemli galerilere verin.",
-        "duration": "180 dk",
-        "address": "Viale Vaticano, 00165 Roma RM, Italy",
-        "mapLink": "https://www.google.com/maps/search/?api=1&query=Vatican+Museums",
-        "ticketRequired": true,
-        "reservationRequired": true,
-        "priority": "mutlaka",
-        "ticketNote": "Önceden saatli resmi bilet alınmalı. Sistine Şapeli bu müze rotasının içindedir.",
-        "foodSuggestions": []
-      },
-      {
-        "id": "rome-3-sistine",
-        "time": "12:00",
-        "title": "Sistine Şapeli",
-        "type": "müze",
-        "description": "Vatikan Müzeleri rotasının en önemli final noktası. İçeride fotoğraf kurallarına uyun ve kalabalığa hazırlıklı olun.",
+        "id": "rome-4-square",
+        "time": "08:45",
+        "title": "San Pietro Meydanı ve Güvenlik Sırası",
+        "type": "gezi",
+        "description": "Bazilika girişi ücretsizdir ancak güvenlik kontrolü sırası sabah erken saatlerde bile hızlıca uzayabilir. Hemen sıraya girmek en iyisidir.",
         "duration": "30 dk",
-        "address": "Sistine Chapel, Vatican City",
-        "mapLink": "https://www.google.com/maps/search/?api=1&query=Sistine+Chapel",
-        "ticketRequired": true,
-        "reservationRequired": true,
+        "address": "Piazza San Pietro, 00120 Vatican City",
+        "mapLink": "https://www.google.com/maps/search/?api=1&query=St+Peter%27s+Square+Vatican",
+        "ticketRequired": false,
+        "reservationRequired": false,
         "priority": "mutlaka",
-        "ticketNote": "Ayrı bilet değil; Vatikan Müzeleri biletiyle görülür.",
         "foodSuggestions": []
       },
       {
-        "id": "rome-3-prati-lunch",
-        "time": "13:00",
-        "title": "Prati öğle molası",
+        "id": "rome-4-st-peter",
+        "time": "09:15",
+        "title": "San Pietro Bazilikası",
+        "type": "gezi",
+        "description": "Bazilika ve meydan Vatikan gününün ilk ana parçası. Kubbeye çıkış (Cupola) yapmak isterseniz hemen girişte bilet alıp merdivenlere/asansöre yönelmelisiniz.",
+        "duration": "105 dk",
+        "address": "Piazza San Pietro, 00120 Vatican City",
+        "mapLink": "https://www.google.com/maps/search/?api=1&query=St+Peter%27s+Basilica+Vatican",
+        "ticketRequired": false,
+        "reservationRequired": false,
+        "priority": "mutlaka",
+        "ticketNote": "Bazilika girişi genelde ücretsizdir; kubbe çıkışı istenirse ayrı ücret/sıra olabilir.",
+        "transportNote": "Meydandan bazilikaya geçiş yürüme ve sıra durumuna göre uzayabilir.",
+        "foodSuggestions": []
+      },
+      {
+        "id": "rome-4-prati-lunch",
+        "time": "11:00",
+        "title": "Prati öğle yemeği (Erken mola)",
         "type": "yemek molası",
-        "description": "Müze çıkışında doğrudan turistik yerlere oturmak yerine Prati tarafında daha rahat bir mola.",
+        "description": "Vatikan Müzeleri'ne 13:00'te girmeden önce enerjimizi toplamak için Prati bölgesinde güzel ve sakin bir öğle yemeği yiyoruz.",
         "duration": "90 dk",
         "address": "Prati, Rome, Italy",
         "mapLink": "https://www.google.com/maps/search/?api=1&query=Prati+Rome+lunch+restaurants",
@@ -624,38 +875,53 @@ const DEMO_TRIP_DATA = {
         ]
       },
       {
-        "id": "rome-3-st-peter",
-        "time": "14:45",
-        "title": "San Pietro Bazilikası",
-        "type": "gezi",
-        "description": "Bazilika ve meydan Vatikan gününün ikinci ana parçası. Güvenlik sırası olabilir; süre esnek tutulmalı.",
-        "duration": "90 dk",
-        "address": "Piazza San Pietro, 00120 Vatican City",
-        "mapLink": "https://www.google.com/maps/search/?api=1&query=St+Peter%27s+Basilica+Vatican",
-        "ticketRequired": false,
-        "reservationRequired": false,
-        "priority": "mutlaka",
-        "ticketNote": "Bazilika girişi genelde ücretsizdir; kubbe çıkışı istenirse ayrı ücret/sıra olabilir.",
-        "transportNote": "Müze çıkışından bazilikaya geçiş yürüme ve sıra durumuna göre uzayabilir.",
-        "foodSuggestions": []
-      },
-      {
-        "id": "rome-3-square",
-        "time": "16:15",
-        "title": "San Pietro Meydanı",
-        "type": "gezi",
-        "description": "Meydan, sütunlar ve fotoğraf için kısa serbest zaman.",
+        "id": "rome-4-vatican-transfer",
+        "time": "12:30",
+        "title": "Vatikan Müzeleri girişine geçiş",
+        "type": "ulaşım",
+        "description": "Yemekten sonra Vatikan Müzeleri girişine yürüyoruz. Giriş kapısında bilet saatinden en az 15 dakika önce (12:45) hazır olmak gerekiyor.",
         "duration": "30 dk",
-        "address": "Piazza San Pietro, 00120 Vatican City",
-        "mapLink": "https://www.google.com/maps/search/?api=1&query=St+Peter%27s+Square+Vatican",
+        "address": "Viale Vaticano, 00165 Roma RM, Italy",
+        "mapLink": "https://www.google.com/maps/search/?api=1&query=Vatican+Museums+Entrance",
         "ticketRequired": false,
         "reservationRequired": false,
         "priority": "mutlaka",
+        "transportNote": "Prati'den müze giriş kapısına yürüyüş yaklaşık 15 dk sürer.",
         "foodSuggestions": []
       },
       {
-        "id": "rome-3-ponte",
-        "time": "17:00",
+        "id": "rome-4-vatican-museums",
+        "time": "13:00",
+        "title": "Vatikan Müzeleri",
+        "type": "müze",
+        "description": "Vatikan gününün ana durağı. Saat 13:00 biletli girişimiz ile içerideki ünlü galerileri (Haritalar Galerisi, Rafael Odaları vb.) keşfediyoruz.",
+        "duration": "180 dk",
+        "address": "Viale Vaticano, 00165 Roma RM, Italy",
+        "mapLink": "https://www.google.com/maps/search/?api=1&query=Vatican+Museums",
+        "ticketRequired": true,
+        "reservationRequired": true,
+        "priority": "mutlaka",
+        "ticketNote": "1 Eylül Salı 13:00 biletli girişimiz. Sistine Şapeli bu müze rotasının içindedir.",
+        "foodSuggestions": []
+      },
+      {
+        "id": "rome-4-sistine",
+        "time": "16:00",
+        "title": "Sistine Şapeli",
+        "type": "müze",
+        "description": "Vatikan Müzeleri rotasının en önemli final noktası. Michelangelo'nun başyapıtı tavan fresklerini inceliyoruz.",
+        "duration": "30 dk",
+        "address": "Sistine Chapel, Vatican City",
+        "mapLink": "https://www.google.com/maps/search/?api=1&query=Sistine+Chapel",
+        "ticketRequired": true,
+        "reservationRequired": true,
+        "priority": "mutlaka",
+        "ticketNote": "Ayrı bilet değil; Vatikan Müzeleri biletiyle görülür.",
+        "foodSuggestions": []
+      },
+      {
+        "id": "rome-4-ponte",
+        "time": "16:45",
         "title": "Ponte Sant'Angelo",
         "type": "gezi",
         "description": "Nehir kenarı ve melek heykelli köprü yürüyüşü. Gün batımına doğru çok keyifli olur.",
@@ -668,8 +934,8 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-3-castel",
-        "time": "17:45",
+        "id": "rome-4-castel",
+        "time": "17:20",
         "title": "Castel Sant'Angelo dışı",
         "type": "gezi",
         "description": "İçeri girmek güzel ama Vatikan sonrası yorucu olabilir. Bu planda dışarıdan ve köprüden görmek yeterli.",
@@ -683,7 +949,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-3-dinner",
+        "id": "rome-4-dinner",
         "time": "19:15",
         "title": "Prati akşam yemeği",
         "type": "yemek molası",
@@ -714,11 +980,11 @@ const DEMO_TRIP_DATA = {
         ]
       },
       {
-        "id": "rome-3-nightcap",
+        "id": "rome-4-nightcap",
         "time": "21:30",
         "title": "Gece sonu - Prati veya Campo de' Fiori",
         "type": "serbest zaman",
-        "description": "Vatikan gününün ardından hafif bir gece. Prati'de kalıp kanal kenarında bir barda oturmak veya Campo de' Fiori tarafına geçmek mümkün. Campo'nun gece hayatı Pazartesi yoğun değil; sakin bir içki için ideal.",
+        "description": "Vatikan gününün ardından hafif bir gece. Prati'de kalıp kanal kenarında bir barda oturmak veya Campo de' Fiori tarafına geçmek mümkün.",
         "duration": "60 dk",
         "address": "Campo de' Fiori, 00186 Roma RM, Italy",
         "mapLink": "https://www.google.com/maps/search/?api=1&query=bar+Campo+de+Fiori+Rome+night",
@@ -726,218 +992,6 @@ const DEMO_TRIP_DATA = {
         "reservationRequired": false,
         "priority": "opsiyonel",
         "transportNote": "Prati'de kalırsanız eve yürüyüş veya kısa taksi. Campo'ya gittiyseniz gece taksi şart.",
-        "foodSuggestions": []
-      }
-    ],
-    "rome:day-4": [
-      {
-        "id": "rome-4-route-map",
-        "time": "06:45",
-        "title": "Günün Haritalı Rotası",
-        "type": "rota özeti",
-        "description": "Salı için Pompei ve Napoli günü. Rota Roma Termini ile başlar, Napoli keşfinden sonra Roma Termini dönüşünde biter; eve dönüş haritaya eklenmez.",
-        "duration": "Tüm gün",
-        "address": "Roma Termini, Rome, Italy",
-        "mapLink": "https://www.google.com/maps/dir/?api=1&origin=Roma+Termini&destination=Roma+Termini&waypoints=Napoli+Centrale|Pompei+Scavi+-+Villa+dei+Misteri|Pompeii+Archaeological+Park|Napoli+Centrale|Spaccanapoli+Naples|Via+San+Gregorio+Armeno+Naples|Piazza+del+Plebiscito+Naples|Lungomare+Caracciolo+Naples",
-        "ticketRequired": false,
-        "reservationRequired": false,
-        "priority": "mutlaka",
-        "transportNote": "Roma-Napoli hızlı tren, Napoli-Pompei için Circumvesuviana veya Campania Express düşünülür. Geç dönüşte Roma Termini’den eve taksi mantıklı olabilir.",
-        "foodSuggestions": []
-      },
-      {
-        "id": "rome-4-hotel",
-        "time": "06:45",
-        "title": "Evden Termini’ye çıkış",
-        "type": "ulaşım",
-        "description": "Günübirlik Pompei/Napoli için erken çıkış. Su, şapka, powerbank, tren biletleri ve Pompei bileti kontrol edilir.",
-        "duration": "30 dk",
-        "address": "Via Belisario, 8, 00187 Roma RM, Italy",
-        "mapLink": "https://www.google.com/maps/dir/?api=1&origin=Via+Belisario+8+Rome&destination=Roma+Termini",
-        "ticketRequired": false,
-        "reservationRequired": false,
-        "priority": "mutlaka",
-        "transportNote": "Sabah erken olduğu için yürüyüş yerine kısa taksi veya otobüs daha rahat olabilir.",
-        "foodSuggestions": []
-      },
-      {
-        "id": "rome-4-termini",
-        "time": "07:20",
-        "title": "Roma Termini",
-        "type": "ulaşım",
-        "description": "Napoli hızlı treni için peron kontrolü ve kısa kahve/su alışverişi.",
-        "duration": "30 dk",
-        "address": "Roma Termini, Rome, Italy",
-        "mapLink": "https://www.google.com/maps/search/?api=1&query=Roma+Termini",
-        "ticketRequired": true,
-        "reservationRequired": true,
-        "priority": "mutlaka",
-        "ticketNote": "Roma-Napoli hızlı tren biletini önceden almak iyi olur. Dönüş saati geç seçilecekse bilet saatini netleştirin.",
-        "foodSuggestions": []
-      },
-      {
-        "id": "rome-4-naples-train",
-        "time": "08:00",
-        "title": "Hızlı tren: Roma → Napoli",
-        "type": "ulaşım",
-        "description": "Yaklaşık 1 saatlik hızlı trenle Napoli Centrale’ye geçiş.",
-        "duration": "75 dk",
-        "address": "Napoli Centrale, Naples, Italy",
-        "mapLink": "https://www.google.com/maps/search/?api=1&query=Napoli+Centrale",
-        "ticketRequired": true,
-        "reservationRequired": true,
-        "priority": "mutlaka",
-        "ticketNote": "Frecciarossa veya Italo saatlerine göre alınabilir.",
-        "foodSuggestions": []
-      },
-      {
-        "id": "rome-4-pompeii-transfer",
-        "time": "09:30",
-        "title": "Napoli → Pompei Scavi geçişi",
-        "type": "ulaşım",
-        "description": "Napoli’den Pompei Scavi - Villa dei Misteri durağına geçiş. Peron ve hat tabelalarını dikkatli takip edin.",
-        "duration": "60 dk",
-        "address": "Pompei Scavi - Villa dei Misteri, Pompei, Italy",
-        "mapLink": "https://www.google.com/maps/search/?api=1&query=Pompei+Scavi+Villa+dei+Misteri",
-        "ticketRequired": true,
-        "reservationRequired": false,
-        "priority": "mutlaka",
-        "transportNote": "Circumvesuviana daha sık, Campania Express daha konforlu olabilir. Dönüş saatini de akılda tutun.",
-        "foodSuggestions": []
-      },
-      {
-        "id": "rome-4-pompeii",
-        "time": "10:45",
-        "title": "Pompei Arkeolojik Alanı",
-        "type": "müze",
-        "description": "Forum, Teatro Grande, Via dell’Abbondanza, önemli evler ve amfitiyatro hattı. Çocuklarla 3,5-4 saat ideal; çok uzatmak yorabilir.",
-        "duration": "240 dk",
-        "address": "Via Villa dei Misteri, 2, 80045 Pompei NA, Italy",
-        "mapLink": "https://www.google.com/maps/search/?api=1&query=Pompeii+Archaeological+Park",
-        "ticketRequired": true,
-        "reservationRequired": true,
-        "priority": "mutlaka",
-        "ticketNote": "Pompei giriş biletini önceden alın. Güneş, taş zemin ve uzun yürüyüş için rahat ayakkabı şart.",
-        "foodSuggestions": []
-      },
-      {
-        "id": "rome-4-naples-return",
-        "time": "15:15",
-        "title": "Pompei → Napoli dönüşü",
-        "type": "ulaşım",
-        "description": "Pompei gezisini bitirip Napoli merkezine dönme zamanı. Buradan Napoli kısa şehir keşfi başlar.",
-        "duration": "60 dk",
-        "address": "Napoli Centrale, Naples, Italy",
-        "mapLink": "https://www.google.com/maps/dir/?api=1&origin=Pompei+Scavi+-+Villa+dei+Misteri&destination=Napoli+Centrale",
-        "ticketRequired": true,
-        "reservationRequired": false,
-        "priority": "mutlaka",
-        "foodSuggestions": []
-      },
-      {
-        "id": "rome-4-spaccanapoli",
-        "time": "16:30",
-        "title": "Spaccanapoli yürüyüşü",
-        "type": "gezi",
-        "description": "Napoli’nin en karakterli tarihi merkez hattı. Kısa ama çok canlı bir şehir hissi verir.",
-        "duration": "45 dk",
-        "address": "Spaccanapoli, Naples, Italy",
-        "mapLink": "https://www.google.com/maps/search/?api=1&query=Spaccanapoli+Naples",
-        "ticketRequired": false,
-        "reservationRequired": false,
-        "priority": "mutlaka",
-        "transportNote": "Napoli Centrale’den metro/taksi veya yürüyüşle merkeze geçilebilir; kalabalıkta çantalara dikkat.",
-        "foodSuggestions": [
-          {
-            "id": "food-naples-sfogliatella",
-            "type": "tatlı",
-            "title": "Sfogliatella molası",
-            "note": "Napoli’de kısa tatlı/kahve molası için iyi seçim. Çıtır hamurlu klasik tatlıyı deneyin.",
-            "price": "€",
-            "mapLink": "https://www.google.com/maps/search/?api=1&query=sfogliatella+near+Spaccanapoli+Naples"
-          }
-        ]
-      },
-      {
-        "id": "rome-4-san-gregorio",
-        "time": "17:20",
-        "title": "Via San Gregorio Armeno",
-        "type": "gezi",
-        "description": "Küçük dükkanlar, figürler ve Napoli sokak atmosferi için kısa ama eğlenceli bir durak.",
-        "duration": "35 dk",
-        "address": "Via San Gregorio Armeno, Naples, Italy",
-        "mapLink": "https://www.google.com/maps/search/?api=1&query=Via+San+Gregorio+Armeno+Naples",
-        "ticketRequired": false,
-        "reservationRequired": false,
-        "priority": "opsiyonel",
-        "foodSuggestions": []
-      },
-      {
-        "id": "rome-4-plebiscito",
-        "time": "18:15",
-        "title": "Piazza del Plebiscito",
-        "type": "gezi",
-        "description": "Napoli’nin büyük meydanı. Gün batımına yakın ferah bir mola ve fotoğraf noktası.",
-        "duration": "35 dk",
-        "address": "Piazza del Plebiscito, Naples, Italy",
-        "mapLink": "https://www.google.com/maps/search/?api=1&query=Piazza+del+Plebiscito+Naples",
-        "ticketRequired": false,
-        "reservationRequired": false,
-        "priority": "opsiyonel",
-        "foodSuggestions": []
-      },
-      {
-        "id": "rome-4-lungomare",
-        "time": "19:00",
-        "title": "Lungomare / deniz kenarı kısa yürüyüş",
-        "type": "gezi",
-        "description": "Hava ve enerji uygunsa Napoli Körfezi manzarası için kısa deniz kenarı yürüyüşü.",
-        "duration": "35 dk",
-        "address": "Lungomare Caracciolo, Naples, Italy",
-        "mapLink": "https://www.google.com/maps/search/?api=1&query=Lungomare+Caracciolo+Naples",
-        "ticketRequired": false,
-        "reservationRequired": false,
-        "priority": "opsiyonel",
-        "transportNote": "Yorgunluk varsa bu durak atlanıp direkt pizzaya veya istasyona geçilebilir.",
-        "foodSuggestions": []
-      },
-      {
-        "id": "rome-4-naples-pizza",
-        "time": "19:45",
-        "title": "Napoli pizza molası",
-        "type": "yemek molası",
-        "description": "Napoli’ye kadar gelmişken pizzayı burada yemek güzel final olur. Kuyruk çok uzunsa alternatif pizzeria seçin.",
-        "duration": "75 dk",
-        "address": "Centro Storico, Naples, Italy",
-        "mapLink": "https://www.google.com/maps/search/?api=1&query=best+pizza+Centro+Storico+Naples",
-        "ticketRequired": false,
-        "reservationRequired": false,
-        "priority": "mutlaka",
-        "foodSuggestions": [
-          {
-            "id": "food-naples-pizza-margherita",
-            "type": "yemek",
-            "title": "Napoli usulü Margherita",
-            "note": "Klasik Margherita veya Marinara deneyin. Çocuklarla paylaşmak kolay olur.",
-            "price": "€€",
-            "mapLink": "https://www.google.com/maps/search/?api=1&query=pizzeria+margherita+Naples+Centro+Storico"
-          }
-        ]
-      },
-      {
-        "id": "rome-4-train-rome",
-        "time": "21:15",
-        "title": "Hızlı tren: Napoli → Roma",
-        "type": "ulaşım",
-        "description": "Geç dönüş planı. Roma’ya varınca ekstra durak yok; Termini’den eve geçip dinlenme.",
-        "duration": "75 dk",
-        "address": "Roma Termini, Rome, Italy",
-        "mapLink": "https://www.google.com/maps/search/?api=1&query=Napoli+Centrale+to+Roma+Termini+train",
-        "ticketRequired": true,
-        "reservationRequired": true,
-        "priority": "mutlaka",
-        "ticketNote": "Dönüş trenini çok geçe bırakırken çocukların yorgunluğunu hesaba katın. Bilet saatini kesinleştirmeden önce Napoli programına bakın.",
-        "transportNote": "Roma Termini’den eve dönüş bu rota kartına eklenmedi; geç saatte taksi en rahat seçenek olabilir.",
         "foodSuggestions": []
       }
     ],

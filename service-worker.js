@@ -1,4 +1,4 @@
-const CACHE_NAME = "plantatil-cache-v1";
+const CACHE_NAME = "plantatil-cache-v2";
 const ASSETS = [
   "./",
   "./index.html",
@@ -41,7 +41,7 @@ self.addEventListener("activate", (event) => {
 // Fetch Event
 self.addEventListener("fetch", (event) => {
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
+    caches.match(event.request, { ignoreSearch: true }).then((cachedResponse) => {
       return cachedResponse || fetch(event.request);
     })
   );
