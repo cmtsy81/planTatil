@@ -1,5 +1,5 @@
 const DEMO_TRIP_DATA = {
-  "version": 2,
+  "version": 3,
   "cities": [
     {
       "id": "rome",
@@ -7,23 +7,27 @@ const DEMO_TRIP_DATA = {
       "days": [
         {
           "id": "day-1",
-          "label": "Cumartesi"
+          "label": "1. Gün - 28 Ağu - Cuma (Roma'ya Varış)"
         },
         {
           "id": "day-2",
-          "label": "Pazar"
+          "label": "2. Gün - 29 Ağu - Cumartesi"
         },
         {
           "id": "day-3",
-          "label": "Pazartesi"
+          "label": "3. Gün - 30 Ağu - Pazar"
         },
         {
           "id": "day-4",
-          "label": "Salı"
+          "label": "4. Gün - 31 Ağu - Pazartesi (Pompei & Napoli)"
         },
         {
           "id": "day-5",
-          "label": "Çarşamba Sabah"
+          "label": "5. Gün - 1 Eyl - Salı (Vatikan)"
+        },
+        {
+          "id": "day-6",
+          "label": "6. Gün - 2 Eyl - Çarşamba (Roma'dan Ayrılış)"
         }
       ]
     },
@@ -33,19 +37,19 @@ const DEMO_TRIP_DATA = {
       "days": [
         {
           "id": "day-1",
-          "label": "2 Eyl - Varış Akşamı"
+          "label": "6. Gün - 2 Eyl - Çarşamba (Floransa'ya Varış)"
         },
         {
           "id": "day-2",
-          "label": "3 Eyl - Floransa"
+          "label": "7. Gün - 3 Eyl - Perşembe (Uffizi & Duomo)"
         },
         {
           "id": "day-3",
-          "label": "4 Eyl - Pisa"
+          "label": "8. Gün - 4 Eyl - Cuma (Pisa)"
         },
         {
           "id": "day-4",
-          "label": "5 Eyl - Ayrılış Sabahı"
+          "label": "9. Gün - 5 Eyl - Cumartesi (Floransa'dan Ayrılış)"
         }
       ]
     },
@@ -55,19 +59,19 @@ const DEMO_TRIP_DATA = {
       "days": [
         {
           "id": "day-1",
-          "label": "5 Eyl - Varış Akşamı"
+          "label": "9. Gün - 5 Eyl - Cumartesi (Venedik'e Varış)"
         },
         {
           "id": "day-2",
-          "label": "6 Eyl - Venedik"
+          "label": "10. Gün - 6 Eyl - Pazar"
         },
         {
           "id": "day-3",
-          "label": "7 Eyl - McArthurGlen"
+          "label": "11. Gün - 7 Eyl - Pazartesi (McArthurGlen Alışveriş)"
         },
         {
           "id": "day-4",
-          "label": "8 Eyl - Ayrılış Sabahı"
+          "label": "12. Gün - 8 Eyl - Salı (Venedik'ten Ayrılış)"
         }
       ]
     },
@@ -77,23 +81,23 @@ const DEMO_TRIP_DATA = {
       "days": [
         {
           "id": "day-1",
-          "label": "8 Eyl - Varış Akşamı"
+          "label": "12. Gün - 8 Eyl - Salı (Milano'ya Varış)"
         },
         {
           "id": "day-2",
-          "label": "9 Eyl - Milano"
+          "label": "13. Gün - 9 Eyl - Çarşamba"
         },
         {
           "id": "day-3",
-          "label": "10 Eyl - Como Gölü"
+          "label": "14. Gün - 10 Eyl - Perşembe (Como Gölü)"
         },
         {
           "id": "day-4",
-          "label": "11 Eyl - Milano"
+          "label": "15. Gün - 11 Eyl - Cuma"
         },
         {
           "id": "day-5",
-          "label": "12 Eyl - Ayrılış Sabahı"
+          "label": "16. Gün - 12 Eyl - Cumartesi (Dönüş Yolu)"
         }
       ]
     }
@@ -101,7 +105,39 @@ const DEMO_TRIP_DATA = {
   "routes": {
     "rome:day-1": [
       {
-        "id": "rome-1-route-map",
+        "id": "rome-1-flight",
+        "time": "19:30",
+        "title": "İzmir (ADB) → Roma (FCO) Uçuşu",
+        "type": "ulaşım",
+        "description": "SunExpress veya Pegasus direkt/aktarmalı uçuş. Pasaport, check-in ve bagaj teslimi için en geç 17:00'de ADB'de hazır olunmalı.",
+        "duration": "150 dk",
+        "address": "İzmir Adnan Menderes Havalimanı (ADB), Turkey",
+        "mapLink": "https://www.google.com/maps/search/?api=1&query=Adnan+Menderes+Airport+ADB",
+        "ticketRequired": true,
+        "reservationRequired": true,
+        "priority": "mutlaka",
+        "ticketNote": "Uçak biletlerini önceden alın. 19:30 kalkışlı uçak ~21:00'de Roma'ya (yerel saat farkı ile) varır.",
+        "foodSuggestions": []
+      },
+      {
+        "id": "rome-1-transfer",
+        "time": "21:30",
+        "title": "Havalimanı → Roma Eve Transfer",
+        "type": "ulaşım",
+        "description": "Roma havalimanına varış sonrası pasaport ve bagaj işlemleri tamamlanıp rezerve transfer aracı veya taksi ile eve geçiş.",
+        "duration": "60 dk",
+        "address": "Via Belisario, 8, 00187 Roma RM, Italy",
+        "mapLink": "https://www.google.com/maps/dir/?api=1&origin=Fiumicino+Airport+FCO&destination=Via+Belisario+8+Roma",
+        "ticketRequired": false,
+        "reservationRequired": true,
+        "priority": "mutlaka",
+        "transportNote": "Geç saatte 7 kişi için en rahat yol önceden rezerve edilmiş bir shuttle/minibüstür.",
+        "foodSuggestions": []
+      }
+    ],
+    "rome:day-2": [
+      {
+        "id": "rome-2-route-map",
         "time": "08:30",
         "title": "Günün Haritalı Rotası",
         "type": "rota özeti",
@@ -116,7 +152,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-1-hotel",
+        "id": "rome-2-hotel",
         "time": "08:30",
         "title": "Evden çıkış ve bilet kontrolü",
         "type": "serbest zaman",
@@ -131,7 +167,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-1-colosseum",
+        "id": "rome-2-colosseum",
         "time": "09:15",
         "title": "Colosseum",
         "type": "müze",
@@ -146,7 +182,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-1-forum",
+        "id": "rome-2-forum",
         "time": "11:00",
         "title": "Roman Forum",
         "type": "müze",
@@ -161,7 +197,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-1-palatine",
+        "id": "rome-2-palatine",
         "time": "12:30",
         "title": "Palatine Hill",
         "type": "müze",
@@ -176,7 +212,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-1-lunch",
+        "id": "rome-2-lunch",
         "time": "13:45",
         "title": "Monti öğle molası",
         "type": "yemek molası",
@@ -207,7 +243,7 @@ const DEMO_TRIP_DATA = {
         ]
       },
       {
-        "id": "rome-1-campidoglio",
+        "id": "rome-2-campidoglio",
         "time": "15:30",
         "title": "Piazza del Campidoglio",
         "type": "gezi",
@@ -221,7 +257,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-1-venezia",
+        "id": "rome-2-venezia",
         "time": "16:15",
         "title": "Piazza Venezia",
         "type": "gezi",
@@ -235,7 +271,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-1-barberini",
+        "id": "rome-2-barberini",
         "time": "17:30",
         "title": "Piazza Barberini / Via Veneto dönüşü",
         "type": "gezi",
@@ -259,7 +295,7 @@ const DEMO_TRIP_DATA = {
         ]
       },
       {
-        "id": "rome-1-dinner",
+        "id": "rome-2-dinner",
         "time": "19:30",
         "title": "Eve yakın akşam yemeği",
         "type": "yemek molası",
@@ -283,7 +319,7 @@ const DEMO_TRIP_DATA = {
         ]
       },
       {
-        "id": "rome-1-nightcap",
+        "id": "rome-2-nightcap",
         "time": "21:30",
         "title": "Gece sonu - Monti bar",
         "type": "serbest zaman",
@@ -298,9 +334,9 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       }
     ],
-    "rome:day-2": [
+    "rome:day-3": [
       {
-        "id": "rome-2-route-map",
+        "id": "rome-3-route-map",
         "time": "09:00",
         "title": "Günün Haritalı Rotası",
         "type": "rota özeti",
@@ -315,7 +351,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-2-breakfast",
+        "id": "rome-3-breakfast",
         "time": "09:00",
         "title": "Kahve ve hafif başlangıç",
         "type": "yemek molası",
@@ -338,7 +374,7 @@ const DEMO_TRIP_DATA = {
         ]
       },
       {
-        "id": "rome-2-spanish",
+        "id": "rome-3-spanish",
         "time": "10:00",
         "title": "Spanish Steps",
         "type": "gezi",
@@ -352,7 +388,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-2-trevi",
+        "id": "rome-3-trevi",
         "time": "10:50",
         "title": "Trevi Fountain",
         "type": "gezi",
@@ -375,7 +411,7 @@ const DEMO_TRIP_DATA = {
         ]
       },
       {
-        "id": "rome-2-pantheon",
+        "id": "rome-3-pantheon",
         "time": "11:45",
         "title": "Pantheon",
         "type": "gezi",
@@ -390,7 +426,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-2-santeustachio",
+        "id": "rome-3-santeustachio",
         "time": "12:45",
         "title": "Sant'Eustachio / kahve molası",
         "type": "kahve molası",
@@ -413,7 +449,7 @@ const DEMO_TRIP_DATA = {
         ]
       },
       {
-        "id": "rome-2-navona",
+        "id": "rome-3-navona",
         "time": "13:15",
         "title": "Piazza Navona",
         "type": "gezi",
@@ -427,7 +463,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-2-lunch",
+        "id": "rome-3-lunch",
         "time": "14:00",
         "title": "Navona / Campo öğle molası",
         "type": "yemek molası",
@@ -458,7 +494,7 @@ const DEMO_TRIP_DATA = {
         ]
       },
       {
-        "id": "rome-2-campo",
+        "id": "rome-3-campo",
         "time": "15:30",
         "title": "Campo de' Fiori",
         "type": "gezi",
@@ -472,7 +508,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-2-ghetto",
+        "id": "rome-3-ghetto",
         "time": "16:15",
         "title": "Jewish Ghetto yürüyüşü",
         "type": "gezi",
@@ -495,7 +531,7 @@ const DEMO_TRIP_DATA = {
         ]
       },
       {
-        "id": "rome-2-isola",
+        "id": "rome-3-isola",
         "time": "17:30",
         "title": "Isola Tiberina",
         "type": "gezi",
@@ -509,7 +545,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-2-trastevere",
+        "id": "rome-3-trastevere",
         "time": "18:15",
         "title": "Trastevere sokakları",
         "type": "gezi",
@@ -523,7 +559,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-2-dinner",
+        "id": "rome-3-dinner",
         "time": "19:45",
         "title": "Trastevere akşam yemeği",
         "type": "yemek molası",
@@ -556,7 +592,7 @@ const DEMO_TRIP_DATA = {
         ]
       },
       {
-        "id": "rome-2-nightcap",
+        "id": "rome-3-nightcap",
         "time": "22:00",
         "title": "Gece sonu - Trastevere bar",
         "type": "serbest zaman",
@@ -571,9 +607,9 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       }
     ],
-    "rome:day-3": [
+    "rome:day-4": [
       {
-        "id": "rome-3-route-map",
+        "id": "rome-4-route-map",
         "time": "06:45",
         "title": "Günün Haritalı Rotası",
         "type": "rota özeti",
@@ -588,7 +624,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-3-hotel",
+        "id": "rome-4-hotel",
         "time": "06:45",
         "title": "Evden Termini’ye çıkış",
         "type": "ulaşım",
@@ -603,7 +639,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-3-termini",
+        "id": "rome-4-termini",
         "time": "07:20",
         "title": "Roma Termini",
         "type": "ulaşım",
@@ -618,7 +654,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-3-naples-train",
+        "id": "rome-4-naples-train",
         "time": "08:00",
         "title": "Hızlı tren: Roma → Napoli",
         "type": "ulaşım",
@@ -633,7 +669,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-3-pompeii-transfer",
+        "id": "rome-4-pompeii-transfer",
         "time": "09:30",
         "title": "Napoli → Pompei Scavi geçişi",
         "type": "ulaşım",
@@ -648,7 +684,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-3-pompeii",
+        "id": "rome-4-pompeii",
         "time": "10:45",
         "title": "Pompei Arkeolojik Alanı",
         "type": "müze",
@@ -663,7 +699,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-3-naples-return",
+        "id": "rome-4-naples-return",
         "time": "15:15",
         "title": "Pompei → Napoli dönüşü",
         "type": "ulaşım",
@@ -677,7 +713,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-3-spaccanapoli",
+        "id": "rome-4-spaccanapoli",
         "time": "16:30",
         "title": "Spaccanapoli yürüyüşü",
         "type": "gezi",
@@ -701,7 +737,7 @@ const DEMO_TRIP_DATA = {
         ]
       },
       {
-        "id": "rome-3-san-gregorio",
+        "id": "rome-4-san-gregorio",
         "time": "17:20",
         "title": "Via San Gregorio Armeno",
         "type": "gezi",
@@ -715,7 +751,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-3-plebiscito",
+        "id": "rome-4-plebiscito",
         "time": "18:15",
         "title": "Piazza del Plebiscito",
         "type": "gezi",
@@ -729,7 +765,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-3-lungomare",
+        "id": "rome-4-lungomare",
         "time": "19:00",
         "title": "Lungomare / deniz kenarı kısa yürüyüş",
         "type": "gezi",
@@ -744,7 +780,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-3-naples-pizza",
+        "id": "rome-4-naples-pizza",
         "time": "19:45",
         "title": "Napoli pizza molası",
         "type": "yemek molası",
@@ -767,7 +803,7 @@ const DEMO_TRIP_DATA = {
         ]
       },
       {
-        "id": "rome-3-train-rome",
+        "id": "rome-4-train-rome",
         "time": "21:15",
         "title": "Hızlı tren: Napoli → Roma",
         "type": "ulaşım",
@@ -783,9 +819,9 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       }
     ],
-    "rome:day-4": [
+    "rome:day-5": [
       {
-        "id": "rome-4-route-map",
+        "id": "rome-5-route-map",
         "time": "08:00",
         "title": "Günün Haritalı Rotası",
         "type": "rota özeti",
@@ -800,7 +836,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-4-hotel",
+        "id": "rome-5-hotel",
         "time": "08:00",
         "title": "Evden Vatikan'a (San Pietro'ya) çıkış",
         "type": "ulaşım",
@@ -815,7 +851,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-4-square",
+        "id": "rome-5-square",
         "time": "08:45",
         "title": "San Pietro Meydanı ve Güvenlik Sırası",
         "type": "gezi",
@@ -829,7 +865,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-4-st-peter",
+        "id": "rome-5-st-peter",
         "time": "09:15",
         "title": "San Pietro Bazilikası",
         "type": "gezi",
@@ -845,7 +881,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-4-prati-lunch",
+        "id": "rome-5-prati-lunch",
         "time": "11:00",
         "title": "Prati öğle yemeği (Erken mola)",
         "type": "yemek molası",
@@ -876,7 +912,7 @@ const DEMO_TRIP_DATA = {
         ]
       },
       {
-        "id": "rome-4-vatican-transfer",
+        "id": "rome-5-vatican-transfer",
         "time": "12:30",
         "title": "Vatikan Müzeleri girişine geçiş",
         "type": "ulaşım",
@@ -891,7 +927,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-4-vatican-museums",
+        "id": "rome-5-vatican-museums",
         "time": "13:00",
         "title": "Vatikan Müzeleri",
         "type": "müze",
@@ -906,7 +942,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-4-sistine",
+        "id": "rome-5-sistine",
         "time": "16:00",
         "title": "Sistine Şapeli",
         "type": "müze",
@@ -921,7 +957,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-4-ponte",
+        "id": "rome-5-ponte",
         "time": "16:45",
         "title": "Ponte Sant'Angelo",
         "type": "gezi",
@@ -935,7 +971,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-4-castel",
+        "id": "rome-5-castel",
         "time": "17:20",
         "title": "Castel Sant'Angelo dışı",
         "type": "gezi",
@@ -950,7 +986,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-4-dinner",
+        "id": "rome-5-dinner",
         "time": "19:15",
         "title": "Prati akşam yemeği",
         "type": "yemek molası",
@@ -981,7 +1017,7 @@ const DEMO_TRIP_DATA = {
         ]
       },
       {
-        "id": "rome-4-nightcap",
+        "id": "rome-5-nightcap",
         "time": "21:30",
         "title": "Gece sonu - Prati veya Campo de' Fiori",
         "type": "serbest zaman",
@@ -996,9 +1032,9 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       }
     ],
-    "rome:day-5": [
+    "rome:day-6": [
       {
-        "id": "rome-5-route-map",
+        "id": "rome-6-route-map",
         "time": "08:15",
         "title": "Günün Haritalı Rotası",
         "type": "rota özeti",
@@ -1013,7 +1049,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-5-breakfast",
+        "id": "rome-6-breakfast",
         "time": "08:15",
         "title": "Kahvaltı ve çıkış hazırlığı",
         "type": "yemek molası",
@@ -1036,7 +1072,7 @@ const DEMO_TRIP_DATA = {
         ]
       },
       {
-        "id": "rome-5-borghese",
+        "id": "rome-6-borghese",
         "time": "09:15",
         "title": "Villa Borghese / Pincio kısa yürüyüş",
         "type": "gezi",
@@ -1051,7 +1087,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-5-spanish",
+        "id": "rome-6-spanish",
         "time": "10:30",
         "title": "Piazza di Spagna son mola",
         "type": "gezi",
@@ -1065,7 +1101,7 @@ const DEMO_TRIP_DATA = {
         "foodSuggestions": []
       },
       {
-        "id": "rome-5-termini",
+        "id": "rome-6-termini",
         "time": "11:45",
         "title": "Roma Termini → Floransa geçişi",
         "type": "ulaşım",
