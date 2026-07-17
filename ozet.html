@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PlanTatil - Tüm Gezi Özeti</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=5">
+    <style>
+      /* Scoped styling for summary page */
+      .app-shell--wide {
+        width: min(100%, 1240px);
+        margin: 0 auto;
+        padding: 14px;
+      }
+
+      .summary-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+        gap: 14px;
+      }
+
+      .summary-header h1 {
+        margin: 0;
+        font-family: 'Outfit', sans-serif;
+        font-size: 2rem;
+        color: var(--olive);
+      }
+
+      .timeline-rows {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .day-row {
+        background: var(--card);
+        border-radius: 16px;
+        padding: 16px;
+        box-shadow: var(--shadow);
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        gap: 20px;
+        align-items: center;
+        transition: var(--transition);
+        border: 1px solid var(--line);
+      }
+
+      .day-row:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 20px 40px hsla(30, 40%, 15%, 0.12);
+      }
+
+      .day-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding-right: 16px;
+        border-right: 2px solid var(--line);
+      }
+
+      .day-meta__number {
+        font-family: 'Outfit', sans-serif;
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: var(--terra);
+      }
+
+      .day-meta__date {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--olive);
+      }
+
+      .day-meta__city {
+        display: inline-block;
+        align-self: flex-start;
+        background: var(--cream);
+        color: var(--olive);
+        font-size: 0.75rem;
+        font-weight: 800;
+        padding: 4px 8px;
+        border-radius: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .day-timeline-wrapper {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .day-timeline {
+        display: flex;
+        gap: 12px;
+        overflow-x: auto;
+        padding: 8px 4px 12px;
+        scroll-behavior: smooth;
+        scrollbar-width: thin;
+        scrollbar-color: var(--sand) transparent;
+      }
+
+      /* Webkit scrollbar customization */
+      .day-timeline::-webkit-scrollbar {
+        height: 6px;
+      }
+      .day-timeline::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .day-timeline::-webkit-scrollbar-thumb {
+        background-color: var(--sand);
+        border-radius: 10px;
+      }
+
+      .stop-node {
+        flex: 0 0 auto;
+        width: 190px;
+        background: var(--cream-2);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 10px 12px;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        transition: var(--transition);
+        position: relative;
+      }
+
+      .stop-node:hover {
+        transform: translateY(-2px) scale(1.02);
+        background: #fff;
+        box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+      }
+
+      .stop-node__time-type {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .stop-node__time {
+        font-family: 'Outfit', sans-serif;
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: var(--olive);
+      }
+
+      .stop-node__type {
+        font-size: 0.7rem;
+        font-weight: 700;
+        padding: 2px 6px;
+        border-radius: 4px;
+        text-transform: uppercase;
+      }
+
+      .stop-node__title {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--olive);
+        white-space: normal;
+        line-height: 1.3;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .stop-node__badges {
+        display: flex;
+        gap: 4px;
+        margin-top: auto;
+      }
+
+      .badge {
+        font-size: 0.75rem;
+        padding: 1px 4px;
+        border-radius: 4px;
+      }
+
+      /* Node color themes based on type */
+      .type-ulasim { background-color: hsl(200, 75%, 95%); border-color: hsl(200, 70%, 85%); }
+      .type-ulasim .stop-node__type { background-color: hsl(200, 70%, 85%); color: hsl(200, 80%, 30%); }
+      .type-ulasim .stop-node__time { color: hsl(200, 80%, 30%); }
+
+      .type-muze { background-color: hsl(270, 75%, 95%); border-color: hsl(270, 70%, 85%); }
+      .type-muze .stop-node__type { background-color: hsl(270, 70%, 85%); color: hsl(270, 80%, 30%); }
+      .type-muze .stop-node__time { color: hsl(270, 80%, 30%); }
+
+      .type-yemek { background-color: hsl(100, 50%, 94%); border-color: hsl(100, 50%, 82%); }
+      .type-yemek .stop-node__type { background-color: hsl(100, 50%, 82%); color: hsl(100, 60%, 25%); }
+      .type-yemek .stop-node__time { color: hsl(100, 60%, 25%); }
+
+      .type-gezi { background-color: hsl(45, 80%, 94%); border-color: hsl(45, 70%, 82%); }
+      .type-gezi .stop-node__type { background-color: hsl(45, 70%, 82%); color: hsl(35, 80%, 30%); }
+      .type-gezi .stop-node__time { color: hsl(35, 80%, 30%); }
+
+      /* Critical highlight (Ticket or Reservation required) */
+      .stop-node.is-critical {
+        border: 2px solid var(--terra);
+        box-shadow: 0 0 10px rgba(226, 95, 56, 0.15);
+      }
+
+      .stop-node.is-critical::after {
+        content: "🎫";
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        font-size: 0.9rem;
+        background: white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        border: 1px solid var(--terra);
+      }
+
+      /* Detail Box inside Dialog */
+      .detail-card {
+        padding: 8px 4px;
+      }
+      .detail-row {
+        margin-bottom: 12px;
+      }
+      .detail-label {
+        font-size: 0.75rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        color: var(--muted);
+        letter-spacing: 0.05em;
+        margin-bottom: 2px;
+      }
+      .detail-value {
+        font-size: 0.95rem;
+        color: var(--olive);
+        line-height: 1.4;
+      }
+
+      /* Responsive rules */
+      @media (max-width: 900px) {
+        .day-row {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+        .day-meta {
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          border-right: none;
+          border-bottom: 2px solid var(--line);
+          padding-right: 0;
+          padding-bottom: 10px;
+        }
+        .day-meta__city {
+          align-self: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-shell app-shell--wide">
+      <header class="summary-header">
+        <div>
+          <p class="eyebrow">Tüm Seyahat Çizelgesi</p>
+          <h1>📊 Gezi Özeti</h1>
+        </div>
+        <a href="index.html" class="primary-button" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+          🏠 Ana Pano
+        </a>
+      </header>
+
+      <main class="timeline-rows" id="summaryContainer">
+        <!-- JS builds rows here -->
+      </main>
+    </div>
+
+    <!-- Detailed Modal View for any Stop Node -->
+    <dialog class="dialog" id="detailDialog">
+      <div class="dialog__header">
+        <h2 id="detailTitle">Durak Detayı</h2>
+        <button class="icon-button" id="closeDetailDialog" type="button" aria-label="Kapat">x</button>
+      </div>
+      <div class="detail-card">
+        <div class="detail-row">
+          <div class="detail-label">Saat ve Süre</div>
+          <div class="detail-value" id="detailTimeAndDuration">-</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Tür</div>
+          <div class="detail-value" id="detailType">-</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Açıklama</div>
+          <div class="detail-value" id="detailDescription">-</div>
+        </div>
+        <div class="detail-row" id="detailAddressRow">
+          <div class="detail-label">Adres</div>
+          <div class="detail-value" id="detailAddress">-</div>
+        </div>
+        <div class="detail-row" id="detailMapRow">
+          <div class="detail-label">Harita Linki</div>
+          <div class="detail-value">
+            <a id="detailMapLink" href="#" target="_blank" rel="noopener">Google Haritalarda Göster 📍</a>
+          </div>
+        </div>
+        <div class="detail-row" id="detailTicketRow" style="display: none;">
+          <div class="detail-label" style="color: var(--terra);">🎫 Bilet / Rezervasyon Notu</div>
+          <div class="detail-value" id="detailTicketNote">-</div>
+        </div>
+        <div class="detail-row" id="detailFoodRow" style="display: none;">
+          <div class="detail-label" style="color: #4a7a50;">🍽️ Yemek Önerileri</div>
+          <div class="detail-value" id="detailFoodSuggestions">-</div>
+        </div>
+      </div>
+      <menu class="dialog__actions">
+        <button class="ghost-button" id="closeDetailButton" type="button">Kapat</button>
+      </menu>
+    </dialog>
+
+    <script src="data.js?v=5"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const container = document.getElementById("summaryContainer");
+        const dialog = document.getElementById("detailDialog");
+        
+        // Modal UI Elements
+        const detailTitle = document.getElementById("detailTitle");
+        const detailTimeAndDuration = document.getElementById("detailTimeAndDuration");
+        const detailType = document.getElementById("detailType");
+        const detailDescription = document.getElementById("detailDescription");
+        const detailAddressRow = document.getElementById("detailAddressRow");
+        const detailAddress = document.getElementById("detailAddress");
+        const detailMapRow = document.getElementById("detailMapRow");
+        const detailMapLink = document.getElementById("detailMapLink");
+        const detailTicketRow = document.getElementById("detailTicketRow");
+        const detailTicketNote = document.getElementById("detailTicketNote");
+        const detailFoodRow = document.getElementById("detailFoodRow");
+        const detailFoodSuggestions = document.getElementById("detailFoodSuggestions");
+
+        // Close modal triggers
+        document.getElementById("closeDetailDialog").addEventListener("click", () => dialog.close());
+        document.getElementById("closeDetailButton").addEventListener("click", () => dialog.close());
+
+        // Check data source
+        if (typeof DEMO_TRIP_DATA === "undefined") {
+          container.innerHTML = `<div class="empty-state"><h2>Veri kaynağı (data.js) bulunamadı.</h2></div>`;
+          return;
+        }
+
+        // Loop through all cities and their days to build timeline rows
+        DEMO_TRIP_DATA.cities.forEach(city => {
+          city.days.forEach(day => {
+            const routeKey = `${city.id}:${day.id}`;
+            const routeStops = DEMO_TRIP_DATA.routes[routeKey] || [];
+            
+            // Parse day label (e.g. "1. Gün - 28 Ağu - Cuma (Roma'ya Varış)")
+            // We split into day number, and details
+            const labelParts = day.label.split(" - ");
+            const dayNum = labelParts[0] || "";
+            const dayDate = labelParts[1] ? `${labelParts[1]} - ${labelParts[2] || ""}` : day.label;
+
+            // Row Container
+            const row = document.createElement("div");
+            row.className = "day-row";
+
+            // Left side (Meta info)
+            const meta = document.createElement("div");
+            meta.className = "day-meta";
+            meta.innerHTML = `
+              <span class="day-meta__number">${dayNum}</span>
+              <span class="day-meta__date">${dayDate}</span>
+              <span class="day-meta__city">${city.name}</span>
+            `;
+            row.appendChild(meta);
+
+            // Right side (Timeline of stops)
+            const timelineWrapper = document.createElement("div");
+            timelineWrapper.className = "day-timeline-wrapper";
+
+            const timeline = document.createElement("div");
+            timeline.className = "day-timeline";
+
+            if (routeStops.length === 0) {
+              timeline.innerHTML = `<p style="color: var(--muted); font-size: 0.85rem; margin: 8px 0;">Bu gün için planlanmış etkinlik bulunmuyor.</p>`;
+            } else {
+              routeStops.forEach(stop => {
+                const stopNode = document.createElement("div");
+                
+                // Color theme class map
+                let typeClass = "";
+                const typeLower = (stop.type || "").toLowerCase();
+                if (typeLower.includes("ulaşım") || typeLower.includes("transfer")) {
+                  typeClass = "type-ulasim";
+                } else if (typeLower.includes("müze") || typeLower.includes("galeri")) {
+                  typeClass = "type-muze";
+                } else if (typeLower.includes("yemek") || typeLower.includes("mola")) {
+                  typeClass = "type-yemek";
+                } else if (typeLower.includes("gezi") || typeLower.includes("serbest")) {
+                  typeClass = "type-gezi";
+                }
+
+                stopNode.className = `stop-node ${typeClass}`;
+                
+                // Critical status check (Ticket or reservation required)
+                const isCritical = stop.ticketRequired === true || stop.reservationRequired === true;
+                if (isCritical) {
+                  stopNode.classList.add("is-critical");
+                }
+
+                // Node content
+                stopNode.innerHTML = `
+                  <div class="stop-node__time-type">
+                    <span class="stop-node__time">${stop.time || ""}</span>
+                    <span class="stop-node__type">${stop.type || ""}</span>
+                  </div>
+                  <div class="stop-node__title" title="${stop.title}">${stop.title || ""}</div>
+                `;
+
+                // Event listener to open modal with full details
+                stopNode.addEventListener("click", () => {
+                  showStopDetails(stop, city.name, dayNum);
+                });
+
+                timeline.appendChild(stopNode);
+              });
+            }
+
+            timelineWrapper.appendChild(timeline);
+            row.appendChild(timelineWrapper);
+            container.appendChild(row);
+          });
+        });
+
+        // Function to populate and open stop details modal
+        function showStopDetails(stop, cityName, dayNum) {
+          detailTitle.textContent = `${cityName} / ${dayNum} - ${stop.title}`;
+          detailTimeAndDuration.textContent = `${stop.time || "Belirtilmemiş"} (${stop.duration || "Süre belirtilmemiş"})`;
+          detailType.textContent = (stop.type || "Belirtilmemiş").toUpperCase();
+          detailDescription.textContent = stop.description || "Açıklama bulunmuyor.";
+
+          // Address
+          if (stop.address) {
+            detailAddressRow.style.display = "block";
+            detailAddress.textContent = stop.address;
+          } else {
+            detailAddressRow.style.display = "none";
+          }
+
+          // Map link
+          if (stop.mapLink) {
+            detailMapRow.style.display = "block";
+            detailMapLink.href = stop.mapLink;
+          } else {
+            detailMapRow.style.display = "none";
+          }
+
+          // Ticket note
+          const isCritical = stop.ticketRequired || stop.reservationRequired;
+          if (isCritical || stop.ticketNote) {
+            detailTicketRow.style.display = "block";
+            detailTicketNote.textContent = stop.ticketNote || "Bilet veya rezervasyon gereklidir.";
+          } else {
+            detailTicketRow.style.display = "none";
+          }
+
+          // Food suggestions
+          if (stop.foodSuggestions && stop.foodSuggestions.length > 0) {
+            detailFoodRow.style.display = "block";
+            const foodText = stop.foodSuggestions.map(f => {
+              const priceText = f.price ? ` (${f.price})` : "";
+              const noteText = f.note ? ` - ${f.note}` : "";
+              return `• **${f.title}**${priceText}${noteText}`;
+            }).join("\n");
+            
+            // Convert simple markdown bullets/bold in suggestions to HTML
+            detailFoodSuggestions.innerHTML = foodText
+              .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+              .replace(/\n/g, '<br>');
+          } else {
+            detailFoodRow.style.display = "none";
+          }
+
+          // Open dialog modal
+          dialog.showModal();
+        }
+      });
+    </script>
+  </body>
+</html>

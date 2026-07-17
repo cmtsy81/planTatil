@@ -1,7 +1,8 @@
-const CACHE_NAME = "plantatil-cache-v4";
+const CACHE_NAME = "plantatil-cache-v5";
 const ASSETS = [
   "./",
   "./index.html",
+  "./ozet.html",
   "./styles.css",
   "./app.js",
   "./data.js",
